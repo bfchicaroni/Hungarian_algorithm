@@ -14,11 +14,7 @@ int main(void) {
   criaAresta(1, 4, G);
   imprimeGrafo(G);
 
-  insereVertice(6, G);
   removeAresta(1, 4, G);
-  imprimeGrafo(G);
-
-  removeVertice(3, G);
   imprimeGrafo(G);
 
   Aresta* emparelhamento = malloc(2*sizeof(Aresta));

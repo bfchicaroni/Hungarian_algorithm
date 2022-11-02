@@ -12,6 +12,7 @@ typedef struct Vertice {
 typedef struct Aresta {
   int u;
   int v;
+  int existe;
 } Aresta;
 
 typedef struct Grafo {
@@ -19,6 +20,7 @@ typedef struct Grafo {
   Aresta* arestas;
   int n; //qtde_vertices
   int m; //qtde_arestas
+  int maxArestas;
 } Grafo;
 
 #endif

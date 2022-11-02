@@ -10,16 +10,30 @@ Grafo* constroiGrafo (int qtde_vertices) {
   G = malloc(sizeof(Grafo));
   G->vertices = malloc(qtde_vertices*sizeof(Vertice));
   int qtde_arestas = (qtde_vertices * (qtde_vertices - 1)) / 2;
+  G->maxArestas = qtde_arestas;
   G->arestas = malloc(qtde_arestas*sizeof(Aresta));
   G->n = qtde_vertices;
   G->m = 0;
-  int i;
+  int i, j, k;
   Vertice novoVertice;
   for (i=0; i<qtde_vertices; i++) {
     novoVertice.rotulo = i;
     novoVertice.next = NULL;
     G->vertices[i] = novoVertice;
   }
+  Aresta novaAresta;
+  k = 0;
+  for (i = 0; i < qtde_vertices; i++) {
+    printf("v1 = %d\n", i);
+    for(j = i + 1; j < qtde_vertices; j++) {
+      novaAresta.u = i;
+      novaAresta.v = j;
+      novaAresta.existe = 0;
+      G->arestas[k] = novaAresta;
+      k++;
+    }
+  }
+  imprimeArestas(G);
   return G;
 }
 
@@ -35,18 +49,6 @@ bool ehVizinho (int indiceVerticePrincipal, int rotuloVerticeVizinho, Grafo *G) 
     atual = atual->next;
   }
   return false;
-}
-
-//Insere um vértice no grafo
-void insereVertice(int rotulo, Grafo *G) {
-  //Cria a estrutura do novo vertice
-  Vertice novoVertice;
-  novoVertice.rotulo = rotulo;
-  novoVertice.next = NULL;
-
-  Vertice *vg = G->vertices;
-  vg[G->n] = novoVertice;
-  G->n++;
 }
 
 // Remove um vértice da lista de vizinhos de um vértice
@@ -71,16 +73,6 @@ void removerVizinho(int rotuloVizinho, int rotuloVertice, Grafo *G) {
   }
 }
 
-//Função de apoio à função removeAresta
-void removeArestaDoVetor(Grafo* G, int i) {
-  int k = i;
-  Aresta* ag = G->arestas;
-  while(k < G->m - 1) {
-    ag[k] = ag[k+1];
-    k++;
-  }
-}
-
 //Remove uma aresta de um grafo
 void removeAresta(int rotuloVerticeA, int rotuloVerticeB, Grafo* G) {
   removerVizinho(rotuloVerticeA, rotuloVerticeB, G);
@@ -93,13 +85,13 @@ void removeAresta(int rotuloVerticeA, int rotuloVerticeB, Grafo* G) {
   while (i < qtd_arestas) {
     if (ag[i].u == rotuloVerticeA) {
       if (ag[i].v == rotuloVerticeB) {
-        removeArestaDoVetor(G, i);
+        ag[i].existe = 0;
         break;
       }
     }
     else if (ag[i].u == rotuloVerticeB) {
       if (ag[i].v == rotuloVerticeA) {
-        removeArestaDoVetor(G, i);
+        ag[i].existe = 0;
         break;
       }
     }
@@ -110,53 +102,19 @@ void removeAresta(int rotuloVerticeA, int rotuloVerticeB, Grafo* G) {
   G->m --;
 }
 
-//Remove um vértice do grafo e suas arestas
-void removeVertice(int rotuloRemover, Grafo *G) {
-  int i = rotuloRemover;
-  Vertice *vg = G->vertices;
-
-  for(i = 0; i < G->n; i++) {
-    if(ehVizinho(i, rotuloRemover, G)) {
-      removeAresta(vg[i].rotulo, rotuloRemover, G);
-    }
-  }
-
-  int qtd_vertices = G->n;
-  // if(i == qtd_vertices) {
-  //   return;
-  // }
-  while(i < qtd_vertices - 1) {
-    vg[i] = vg[i+1];
-    i++;
-  }
-
-  G->n--;
-}
-
 //Adiciona um novo nó à vizinhança de um vértice na lista de adjacências
 void adicionarVizinho(int rotuloNovoVizinho, int rotuloVertice, Grafo* G) {
   //Cria a estrutura do novo vizinho
   Vertice *novoVizinho = (Vertice*) malloc (sizeof(Vertice));
   (*novoVizinho).rotulo = rotuloNovoVizinho;
-  (*novoVizinho).next = NULL;
 
+  //Encontra o endereço do vértice que vai receber o novo vizinho
   Vertice *vg = G->vertices;
   Vertice *primeiro = &vg[rotuloVertice];
-  
-  //INSERIR VIZINHO NO INICIO DA LISTA
-  //caso o vértice não tenha vizinhos, acrescenta como o primeiro
-  if (primeiro->next==NULL) {
-    primeiro->next = novoVizinho;
-    return;
-  }
-  else {
-    //caso o vértice já tenha vizinhos, acrescenta no fim da lista de vizinhos
-    Vertice* atual = primeiro->next;
-    while (atual->next!=NULL) {
-      atual = atual->next;
-    }
-    atual->next = novoVizinho;
-  }
+
+  //Insere o novo vizinho no início da lista de vizinhos do vértice
+  (*novoVizinho).next = primeiro->next;
+  primeiro->next = novoVizinho;
 
 } 
 
@@ -164,23 +122,37 @@ void adicionarVizinho(int rotuloNovoVizinho, int rotuloVertice, Grafo* G) {
 void criaAresta(int rotuloVerticeA, int rotuloVerticeB, Grafo* G) {
   adicionarVizinho(rotuloVerticeA, rotuloVerticeB, G);
   adicionarVizinho(rotuloVerticeB, rotuloVerticeA, G);
-
-  Aresta novaAresta;
-  novaAresta.u = rotuloVerticeA;
-  novaAresta.v = rotuloVerticeB;
-
   Aresta *ag = G->arestas;
-  ag[G->m] = novaAresta;
 
-  G->m++;
+  int i = 0;
+  int qtd_arestas = G->maxArestas;
+  while (i < qtd_arestas) {
+    printf("%d = [%d] -- [%d]\n", i, ag[i].u, ag[i].v);
+    if (ag[i].u == rotuloVerticeA) {
+      if (ag[i].v == rotuloVerticeB) {
+        ag[i].existe = 1;
+        break;
+      }
+    }
+    else if (ag[i].u == rotuloVerticeB) {
+      if (ag[i].v == rotuloVerticeA) {
+        ag[i].existe = 1;
+        break;
+      }
+    }
+    i++;
+  }
+  G->m ++;
 }
 
 //Imprime na tela a lista de arestas do grafo
 void imprimeArestas(Grafo *G) {
   int i;
   Aresta *ag = G->arestas;
-  for (i = 0; i < G->m; i++) {
-    printf("|%d|---|%d|\n", ag[i].u, ag[i].v);
+  for (i = 0; i < G->maxArestas; i++) {
+    if(ag[i].existe == 1) {
+      printf("|%d|---|%d|\n", ag[i].u, ag[i].v);
+    }
   }
 }
 
