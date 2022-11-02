@@ -24,7 +24,6 @@ Grafo* constroiGrafo (int qtde_vertices) {
   Aresta novaAresta;
   k = 0;
   for (i = 0; i < qtde_vertices; i++) {
-    printf("v1 = %d\n", i);
     for(j = i + 1; j < qtde_vertices; j++) {
       novaAresta.u = i;
       novaAresta.v = j;
@@ -80,7 +79,7 @@ void removeAresta(int rotuloVerticeA, int rotuloVerticeB, Grafo* G) {
   Aresta *ag = G->arestas;
 
   int i = 0;
-  int qtd_arestas = G->m;
+  int qtd_arestas = G->maxArestas;
   while (i < qtd_arestas) {
     if (ag[i].u == rotuloVerticeA) {
       if (ag[i].v == rotuloVerticeB) {
@@ -94,9 +93,7 @@ void removeAresta(int rotuloVerticeA, int rotuloVerticeB, Grafo* G) {
         break;
       }
     }
-    else {
-      i++;
-    }
+    i++;
   }
   G->m --;
 }
@@ -148,7 +145,7 @@ void imprimeArestas(Grafo *G) {
   int i;
   Aresta *ag = G->arestas;
   for (i = 0; i < G->maxArestas; i++) {
-    if(ag[i].existe) {
+    if(ag[i].existe == true) {
       printf("|%d|---|%d|\n", ag[i].u, ag[i].v);
     }
   }
