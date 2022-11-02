@@ -24,7 +24,7 @@ int main(void) {
   emparelhamento[1].v = 4;
   // emparelhamento[2].u = 2;
   // emparelhamento[2].v = 3;
-  if (ehEmparelhamento(G, emparelhamento)) {
+  if (ehEmparelhamento(G, emparelhamento, 2)) {
     printf("Eh emparelhamento\n");
   }
   else {

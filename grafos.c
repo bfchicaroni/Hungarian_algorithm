@@ -28,12 +28,11 @@ Grafo* constroiGrafo (int qtde_vertices) {
     for(j = i + 1; j < qtde_vertices; j++) {
       novaAresta.u = i;
       novaAresta.v = j;
-      novaAresta.existe = 0;
+      novaAresta.existe = false;
       G->arestas[k] = novaAresta;
       k++;
     }
   }
-  imprimeArestas(G);
   return G;
 }
 
@@ -85,13 +84,13 @@ void removeAresta(int rotuloVerticeA, int rotuloVerticeB, Grafo* G) {
   while (i < qtd_arestas) {
     if (ag[i].u == rotuloVerticeA) {
       if (ag[i].v == rotuloVerticeB) {
-        ag[i].existe = 0;
+        ag[i].existe = false;
         break;
       }
     }
     else if (ag[i].u == rotuloVerticeB) {
       if (ag[i].v == rotuloVerticeA) {
-        ag[i].existe = 0;
+        ag[i].existe = false;
         break;
       }
     }
@@ -127,16 +126,15 @@ void criaAresta(int rotuloVerticeA, int rotuloVerticeB, Grafo* G) {
   int i = 0;
   int qtd_arestas = G->maxArestas;
   while (i < qtd_arestas) {
-    printf("%d = [%d] -- [%d]\n", i, ag[i].u, ag[i].v);
     if (ag[i].u == rotuloVerticeA) {
       if (ag[i].v == rotuloVerticeB) {
-        ag[i].existe = 1;
+        ag[i].existe = true;
         break;
       }
     }
     else if (ag[i].u == rotuloVerticeB) {
       if (ag[i].v == rotuloVerticeA) {
-        ag[i].existe = 1;
+        ag[i].existe = true;
         break;
       }
     }
@@ -150,7 +148,7 @@ void imprimeArestas(Grafo *G) {
   int i;
   Aresta *ag = G->arestas;
   for (i = 0; i < G->maxArestas; i++) {
-    if(ag[i].existe == 1) {
+    if(ag[i].existe) {
       printf("|%d|---|%d|\n", ag[i].u, ag[i].v);
     }
   }
