@@ -45,7 +45,7 @@ int main(void) {
   T->predecessor[0] = 2;
   T->predecessor[1] = 1;
   T->predecessor[2] = 1;
-  T->predecessor[3] = 0;
+  T->predecessor[4] = 1;
 
   for(int i = 0; i < M->nVertices; i++) {
     M->vEmparelhados[i] = -1;
@@ -59,25 +59,10 @@ int main(void) {
   M->tamanho = 1;
 
   imprimeEmparelhamento(M);
-  
-  M = diferencaSimetrica(T, M, 3, 1);
+
+  M = diferencaSimetrica(T, M, 4);
 
   imprimeEmparelhamento(M);
-
-
-  // M->conjuntoArestas[4].emparelhada = true;
-  // M->conjuntoArestas[9].emparelhada = true;
-  // //M->conjuntoArestas[7].emparelhada = true;
-  // M->tamanho = 2;
-
-  // imprimeEmparelhamento(M);
-  
-  // if (ehEmparelhamento(G, M) == true) {
-  //   printf("Eh emparelhamento\n");
-  // }
-  // else {
-  //   printf("Nao eh emparelhamento\n");
-  // }
 
   printf("Acabou\n");
  

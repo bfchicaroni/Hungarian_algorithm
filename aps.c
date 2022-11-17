@@ -18,19 +18,17 @@ ArvoreAPS* alocaArvore (Grafo* G) {
   return T;
 }
 
-Emparelhamento* diferencaSimetrica(ArvoreAPS* T, Emparelhamento* M, int y, int u) {
-  int i;
-  for(i = 0; i < M->nVertices; i++) {
-    M->vEmparelhados[i] = -1;
-  }
-  M->tamanho = 0;
+Emparelhamento* diferencaSimetrica(ArvoreAPS* T, Emparelhamento* M, int y) {
   int verticeAtual = y;
-  while(T->predecessor[verticeAtual] != verticeAtual) {
+  while(T->predecessor[T->predecessor[verticeAtual]] != T->predecessor[verticeAtual]) {
     M->vEmparelhados[verticeAtual] = T->predecessor[verticeAtual];
     M->vEmparelhados[T->predecessor[verticeAtual]] = verticeAtual;
-    M->tamanho ++;
     verticeAtual = T->predecessor[verticeAtual];
+    //M->vEmparelhados[T->predecessor[verticeAtual]] = -1;
     verticeAtual = T->predecessor[verticeAtual];
   }
+  M->vEmparelhados[verticeAtual] = T->predecessor[verticeAtual];
+  M->vEmparelhados[T->predecessor[verticeAtual]] = verticeAtual;
+  M->tamanho++;
   return M;
 }

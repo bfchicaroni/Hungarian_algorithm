@@ -7,6 +7,6 @@
 
 ArvoreAPS* alocaArvore (Grafo* G);
 
-Emparelhamento* diferencaSimetrica(ArvoreAPS* T, Emparelhamento* M, int y, int u);
+Emparelhamento* diferencaSimetrica(ArvoreAPS* T, Emparelhamento* M, int y);
 
 #endif

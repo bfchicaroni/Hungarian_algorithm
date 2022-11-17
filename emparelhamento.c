@@ -38,10 +38,10 @@ Emparelhamento* geraEmparelhamentoGuloso(Grafo* G) {
   Vertice* vizinho;
 
   for (i = 0; i < G->n; i++) {
-    if (M->vEmparelhados[i] == -1) {
+    if (!ehCoberto(i, M)) {
       vizinho = G->vertices[i].next;
       while( vizinho != NULL) {
-        if (M->vEmparelhados[vizinho->rotulo] == -1) {
+        if (!ehCoberto(vizinho->rotulo, M)) {
           M->vEmparelhados[i] = vizinho->rotulo;
           M->vEmparelhados[vizinho->rotulo] = i;
           M->tamanho ++;
