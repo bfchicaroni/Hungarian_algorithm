@@ -35,6 +35,8 @@ typedef struct ArestaEmp {
 typedef struct Emparelhamento {
   ArestaEmp *conjuntoArestas;
   bool *vEmparelhados;
+  int tamanho;
+  int maxArestas;
 } Emparelhamento;
 
 #endif

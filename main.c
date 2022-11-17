@@ -17,22 +17,31 @@ int main(void) {
   criaAresta(2, 1, G);
   imprimeGrafo(G);
 
-  removeAresta(1, 4, G);
+  removeAresta(1, 2, G);
+  criaAresta(4, 3, G);
   imprimeGrafo(G);
 
-  Aresta* emparelhamento = malloc(2*sizeof(Aresta));
-  emparelhamento[0].u = 1;
-  emparelhamento[0].v = 2;
-  emparelhamento[1].u = 3;
-  emparelhamento[1].v = 4;
-  // emparelhamento[2].u = 2;
-  // emparelhamento[2].v = 3;
-  if (ehEmparelhamento(G, emparelhamento, 2)) {
-    printf("Eh emparelhamento\n");
-  }
-  else {
-    printf("Nao eh emparelhamento\n");
-  }
+  // Emparelhamento* M = pegaEmparelhamento(G);
+  // printf("Criou o emparelhamento\n");
+  Emparelhamento* M = alocaEmparelhamento(G);
 
+  // imprimeEmparelhamento(M);
+
+  // M->conjuntoArestas[4].emparelhada = true;
+  // M->conjuntoArestas[9].emparelhada = true;
+  // //M->conjuntoArestas[7].emparelhada = true;
+  // M->tamanho = 2;
+
+  // imprimeEmparelhamento(M);
+  
+  // if (ehEmparelhamento(G, M) == true) {
+  //   printf("Eh emparelhamento\n");
+  // }
+  // else {
+  //   printf("Nao eh emparelhamento\n");
+  // }
+
+  printf("Acabou\n");
+ 
   return 0;
 }

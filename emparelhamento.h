@@ -5,10 +5,12 @@
 #ifndef EMPARELHAMENTO_H_
 #define EMPARELHAMENTO_H_
 
-bool ehEmparelhamento (Grafo *G, Aresta* conjuntoArestas, int tamanhoConjunto);
+bool ehEmparelhamento (Grafo *G, Emparelhamento* M);
 
 Emparelhamento* alocaEmparelhamento (Grafo* G);
 
 Emparelhamento* pegaEmparelhamento(Grafo* G);
+
+void imprimeEmparelhamento(Emparelhamento* M);
 
 #endif
