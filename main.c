@@ -6,6 +6,7 @@
 #include <stdbool.h>
 
 int main(void) {
+  printf("Iniciando...\n");
   int qtde_vertices = 5;
   Grafo *G = constroiGrafo(qtde_vertices);
   imprimeGrafo(G);
@@ -21,11 +22,19 @@ int main(void) {
   criaAresta(4, 3, G);
   imprimeGrafo(G);
 
-  // Emparelhamento* M = pegaEmparelhamento(G);
+  // Emparelhamento* M = alocaEmparelhamento(G);
   // printf("Criou o emparelhamento\n");
-  Emparelhamento* M = alocaEmparelhamento(G);
+  Emparelhamento* M = geraEmparelhamentoGuloso(G);
 
-  // imprimeEmparelhamento(M);
+  imprimeEmparelhamento(M);
+
+  for(int i = 0; i < 5; i++) {
+    if(ehCoberto (i, M) == true){
+      printf("%d eh coberto por M\n", i);
+    } else {
+      printf("%d NAO eh coberto por M\n", i);
+    }
+  }
 
   // M->conjuntoArestas[4].emparelhada = true;
   // M->conjuntoArestas[9].emparelhada = true;

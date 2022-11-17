@@ -9,32 +9,19 @@ typedef struct Vertice {
   struct Vertice *next;
 } Vertice;
 
-//Estrutura que representa uma aresta.
-typedef struct Aresta {
-  int u;
-  int v;
-  bool existe;
-} Aresta;
 
 //Estrutura que representa um grafo.
 typedef struct Grafo {
   Vertice* vertices;
-  Aresta* arestas;
   int n; //qtde_vertices
   int m; //qtde_arestas
   int maxArestas;
 } Grafo;
 
-typedef struct ArestaEmp {
-  int u;
-  int v;
-  bool emparelhada;
-} ArestaEmp;
-
 //Estrutura que representa um emparelhamento.
 typedef struct Emparelhamento {
-  ArestaEmp *conjuntoArestas;
-  bool *vEmparelhados;
+  int *vEmparelhados;
+  int nVertices;
   int tamanho;
   int maxArestas;
 } Emparelhamento;

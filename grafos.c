@@ -11,26 +11,14 @@ Grafo* constroiGrafo (int qtde_vertices) {
   G->vertices = malloc(qtde_vertices*sizeof(Vertice));
   int qtde_arestas = (qtde_vertices * (qtde_vertices - 1)) / 2;
   G->maxArestas = qtde_arestas;
-  G->arestas = malloc(qtde_arestas*sizeof(Aresta));
   G->n = qtde_vertices;
   G->m = 0;
-  int i, j, k;
+  int i;
   Vertice novoVertice;
   for (i=0; i<qtde_vertices; i++) {
     novoVertice.rotulo = i;
     novoVertice.next = NULL;
     G->vertices[i] = novoVertice;
-  }
-  Aresta novaAresta;
-  k = 0;
-  for (i = 0; i < qtde_vertices; i++) {
-    for(j = i + 1; j < qtde_vertices; j++) {
-      novaAresta.u = i;
-      novaAresta.v = j;
-      novaAresta.existe = false;
-      G->arestas[k] = novaAresta;
-      k++;
-    }
   }
   return G;
 }
@@ -75,26 +63,6 @@ void removerVizinho(int rotuloVizinho, int rotuloVertice, Grafo *G) {
 void removeAresta(int rotuloVerticeA, int rotuloVerticeB, Grafo* G) {
   removerVizinho(rotuloVerticeA, rotuloVerticeB, G);
   removerVizinho(rotuloVerticeB, rotuloVerticeA, G);
-
-  Aresta *ag = G->arestas;
-
-  int i = 0;
-  int qtd_arestas = G->maxArestas;
-  while (i < qtd_arestas) {
-    if (ag[i].u == rotuloVerticeA) {
-      if (ag[i].v == rotuloVerticeB) {
-        ag[i].existe = false;
-        break;
-      }
-    }
-    else if (ag[i].u == rotuloVerticeB) {
-      if (ag[i].v == rotuloVerticeA) {
-        ag[i].existe = false;
-        break;
-      }
-    }
-    i++;
-  }
   G->m --;
 }
 
@@ -118,35 +86,22 @@ void adicionarVizinho(int rotuloNovoVizinho, int rotuloVertice, Grafo* G) {
 void criaAresta(int rotuloVerticeA, int rotuloVerticeB, Grafo* G) {
   adicionarVizinho(rotuloVerticeA, rotuloVerticeB, G);
   adicionarVizinho(rotuloVerticeB, rotuloVerticeA, G);
-  Aresta *ag = G->arestas;
-
-  int i = 0;
-  int qtd_arestas = G->maxArestas;
-  while (i < qtd_arestas) {
-    if (ag[i].u == rotuloVerticeA) {
-      if (ag[i].v == rotuloVerticeB) {
-        ag[i].existe = true;
-        break;
-      }
-    }
-    else if (ag[i].u == rotuloVerticeB) {
-      if (ag[i].v == rotuloVerticeA) {
-        ag[i].existe = true;
-        break;
-      }
-    }
-    i++;
-  }
   G->m ++;
 }
 
 //Imprime na tela a lista de arestas do grafo
 void imprimeArestas(Grafo *G) {
   int i;
-  Aresta *ag = G->arestas;
-  for (i = 0; i < G->maxArestas; i++) {
-    if(ag[i].existe == true) {
-      printf("|%d|---|%d|\n", ag[i].u, ag[i].v);
+  Vertice* vizinho;
+  for (i = 0; i < G->n; i++) {
+    if (G->vertices[i].next != NULL) {
+      vizinho = G->vertices[i].next;
+      while( vizinho != NULL) {
+        if (i < vizinho->rotulo) {
+          printf("|%d|---|%d|\n", i, vizinho->rotulo);
+        }
+        vizinho = vizinho->next;
+      }
     }
   }
 }

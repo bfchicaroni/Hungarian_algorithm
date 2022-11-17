@@ -9,8 +9,10 @@ bool ehEmparelhamento (Grafo *G, Emparelhamento* M);
 
 Emparelhamento* alocaEmparelhamento (Grafo* G);
 
-Emparelhamento* pegaEmparelhamento(Grafo* G);
+Emparelhamento* geraEmparelhamentoGuloso(Grafo* G);
 
 void imprimeEmparelhamento(Emparelhamento* M);
+
+bool ehCoberto(int vertice, Emparelhamento* M);
 
 #endif
