@@ -26,4 +26,11 @@ typedef struct Emparelhamento {
   int maxArestas;
 } Emparelhamento;
 
+//Estrutura que representa a árvore APS
+typedef struct ArvoreAPS {
+  int *predecessor;
+  bool *visitado;
+  int nVertices;
+} ArvoreAPS;
+
 #endif
