@@ -22,18 +22,6 @@ Emparelhamento* alocaEmparelhamento (Grafo* G) {
 Emparelhamento* geraEmparelhamentoGuloso(Grafo* G) {
   Emparelhamento* M = alocaEmparelhamento(G);
 
-    /* 
-  pega o 0 e o primeiro vizinho e começa a percorrer as listas a partir do vertice 1
-  
-  */
-
-  // Vertice* vizinhoDoVerticeZero = G->vertices[0].next;
-
-  // if (vizinhoDoVerticeZero != NULL) {
-  //   M->vEmparelhados[0] = vizinhoDoVerticeZero->rotulo;
-  //   M->vEmparelhados[vizinhoDoVerticeZero->rotulo] = 0;
-  // }
-
   int i;
   Vertice* vizinho;
 

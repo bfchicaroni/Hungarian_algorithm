@@ -28,7 +28,7 @@ typedef struct Emparelhamento {
 
 //Estrutura que representa a árvore APS
 typedef struct ArvoreAPS {
-  int *predecessor;
+  int *pai;
   bool *visitado;
   int nVertices;
 } ArvoreAPS;
