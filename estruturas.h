@@ -33,4 +33,12 @@ typedef struct ArvoreAPS {
   int nVertices;
 } ArvoreAPS;
 
+typedef struct TuplaAPS {
+  bool achouEmparelhamento;
+  ArvoreAPS* T;
+  int u;
+  bool* Rt;
+  bool* Bt;
+  int* Mt;
+} TuplaAPS;
 #endif

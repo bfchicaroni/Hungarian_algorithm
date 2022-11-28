@@ -1,4 +1,5 @@
 #include "estruturas.h"
+#include "emparelhamento.h"
 #include "aps.h"
 #include <stdio.h>
 #include <stdlib.h>
@@ -18,7 +19,7 @@ ArvoreAPS* alocaArvore (Grafo* G) {
   return T;
 }
 
-Emparelhamento* diferencaSimetrica(ArvoreAPS* T, Emparelhamento* M, int y) {
+void diferencaSimetrica(ArvoreAPS* T, Emparelhamento* M, int y) {
   int verticeAtual = y;
   while(T->pai[T->pai[verticeAtual]] != T->pai[verticeAtual]) {
     M->vEmparelhados[verticeAtual] = T->pai[verticeAtual];
@@ -30,5 +31,82 @@ Emparelhamento* diferencaSimetrica(ArvoreAPS* T, Emparelhamento* M, int y) {
   M->vEmparelhados[verticeAtual] = T->pai[verticeAtual];
   M->vEmparelhados[T->pai[verticeAtual]] = verticeAtual;
   M->tamanho++;
-  return M;
+}
+
+TuplaAPS* alocaMemoriaAPS (Grafo* G) {
+  TuplaAPS* tupla;
+  tupla = malloc(sizeof(TuplaAPS));
+  tupla->T = alocaArvore(G);
+  tupla->Rt = malloc(G->n * sizeof(bool));
+  tupla->Bt = malloc(G->n * sizeof(bool));
+  tupla->Mt = malloc(G->n * sizeof(int));
+
+  int i;
+  for (i = 0; i < G->n; i++) {
+    tupla->Rt[i] = false;
+    tupla->Bt[i] = false;
+    tupla->Mt[i] = -1;
+  }
+  return tupla;
+}
+
+TuplaAPS* APS (Grafo* G, Emparelhamento* M, int u) {
+  TuplaAPS* tupla = alocaMemoriaAPS(G);
+  int* fila = malloc(G->n*sizeof(int));
+  int ini = 0;
+  int fim = 1;
+  int x, y, z;
+  //printf("Memoria do APS alocada\n");
+  
+  fila[ini] = u;
+  bool existeArestaXY = true;
+  x = fila[ini];
+  Vertice* vizX = G->vertices[x].next;
+  y = vizX->rotulo;
+  vizX = vizX->next;
+  tupla->achouEmparelhamento = false;
+  tupla->T->visitado[x] = true;
+  tupla->Rt[x] = true;
+  tupla->T->pai[x] = x;
+  while(existeArestaXY) {
+    tupla->T->visitado[y] = true;
+    tupla->Bt[y] = true;
+    tupla->T->pai[y] = x;
+    z = M->vEmparelhados[y];
+    if(z == -1) {
+      tupla->achouEmparelhamento = true;
+      diferencaSimetrica(tupla->T, M, y);
+      //printf("Terminou com um novo emparelhamento\n");
+      return tupla;
+    }
+    else { 
+      tupla->T->visitado[z] = true;
+      tupla->Rt[z] = true;
+      tupla->Mt[z] = y;
+      tupla->Mt[y] = z;
+      tupla->T->pai[z] = y;
+    }
+    fila[fim] = z;
+    fim++;
+    bool fimDosVizinhos = false; //
+    do {
+      if (vizX == NULL) { //
+        fimDosVizinhos = true; //
+        break; //
+      } //
+      y = vizX->rotulo;
+      vizX = vizX->next;
+    } while(tupla->T->visitado[y]); //
+    if (fimDosVizinhos) {
+      ini++;
+      x = fila[ini];
+      if (ini == fim) {
+        existeArestaXY = false;
+      } else {
+        vizX = G->vertices[x].next;
+        y = vizX->rotulo; //
+      }
+    }
+  }
+  return tupla;
 }
