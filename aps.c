@@ -54,9 +54,9 @@ TuplaAPS* APS (Grafo* G, Emparelhamento* M, int u) {
   TuplaAPS* tupla = alocaMemoriaAPS(G);
   int* fila = malloc(G->n*sizeof(int));
   int ini = 0;
-  int fim = 0;
+  int fim = 1;
   int x, y, z;
-  printf("Memoria do APS alocada\n");
+  //printf("Memoria do APS alocada\n");
   
   fila[ini] = u;
   bool existeArestaXY = true;
@@ -69,8 +69,6 @@ TuplaAPS* APS (Grafo* G, Emparelhamento* M, int u) {
   tupla->Rt[x] = true;
   tupla->T->pai[x] = x;
   while(existeArestaXY) {
-    printf("Entrou no laco com x = %d e y = %d\n", x, y);
-    //y = vizX->rotulo;
     tupla->T->visitado[y] = true;
     tupla->Bt[y] = true;
     tupla->T->pai[y] = x;
@@ -78,37 +76,35 @@ TuplaAPS* APS (Grafo* G, Emparelhamento* M, int u) {
     if(z == -1) {
       tupla->achouEmparelhamento = true;
       diferencaSimetrica(tupla->T, M, y);
-      printf("Terminou com um novo emparelhamento\n");
+      //printf("Terminou com um novo emparelhamento\n");
       return tupla;
     }
     else { 
-      printf("z = %d\n", z);
       tupla->T->visitado[z] = true;
       tupla->Rt[z] = true;
       tupla->Mt[z] = y;
       tupla->Mt[y] = z;
       tupla->T->pai[z] = y;
     }
-    printf("Fim = %d", fim);
-    fim++;
     fila[fim] = z;
-    printf(" novo fim = %d\n", fim);
-    while (tupla->T->visitado[y] && vizX != NULL) {
-      printf("Entrou aqui\n");
+    fim++;
+    bool fimDosVizinhos = false; //
+    do {
+      if (vizX == NULL) { //
+        fimDosVizinhos = true; //
+        break; //
+      } //
       y = vizX->rotulo;
-      printf("y = %d\n", y);
       vizX = vizX->next;
-    }
-    if (vizX == NULL) {
+    } while(tupla->T->visitado[y]); //
+    if (fimDosVizinhos) {
       ini++;
-      printf("ini = %d ", ini);
       x = fila[ini];
-      printf("x = %d\n", x);
-      if (ini > fim) {
+      if (ini == fim) {
         existeArestaXY = false;
       } else {
         vizX = G->vertices[x].next;
-        y = vizX->rotulo;
+        y = vizX->rotulo; //
       }
     }
   }

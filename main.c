@@ -81,14 +81,21 @@ int main(void) {
   imprimeGrafo(G);
 
   Emparelhamento* M = alocaEmparelhamento(G);
-  M->vEmparelhados[1] = 7;
-  M->vEmparelhados[7] = 1;
-  M->vEmparelhados[2] = 8;
-  M->vEmparelhados[8] = 2;
-  M->tamanho = 2;
+  // M->vEmparelhados[1] = 7;
+  // M->vEmparelhados[7] = 1;
+  // M->vEmparelhados[2] = 8;
+  // M->vEmparelhados[8] = 2;
+  // M->tamanho = 2;
+  // imprimeEmparelhamento(M);
+
+  // TuplaAPS* aps = APS(G, M, 5);
+
+  M->vEmparelhados[0] = 8;
+  M->vEmparelhados[8] = 0;
+  M->tamanho = 1;
   imprimeEmparelhamento(M);
 
-  TuplaAPS* aps = APS(G, M, 5);
+  TuplaAPS* aps = APS(G, M, 4);
 
   imprimeEmparelhamento(M);
 
