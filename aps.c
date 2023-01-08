@@ -18,7 +18,7 @@ ArvoreAPS* alocaArvore (Grafo* G) {
   return T;
 }
 
-Emparelhamento* diferencaSimetrica(ArvoreAPS* T, Emparelhamento* M, int y) {
+void diferencaSimetrica(ArvoreAPS* T, Emparelhamento* M, int y) {
   int verticeAtual = y;
   while(T->pai[T->pai[verticeAtual]] != T->pai[verticeAtual]) {
     M->vEmparelhados[verticeAtual] = T->pai[verticeAtual];
@@ -55,7 +55,6 @@ TuplaAPS* APS (Grafo* G, Emparelhamento* M, int u) {
   int ini = 0;
   int fim = 1;
   int x, y, z;
-  printf("Memoria do APS alocada\n");
   
   fila[ini] = u;
   x = fila[ini];
@@ -69,7 +68,7 @@ TuplaAPS* APS (Grafo* G, Emparelhamento* M, int u) {
 
   do {
     do {
-      if(vizX != NULL) {
+      if(vizX == NULL) {
         fimDosVizinhos = true;
         break;
       }
@@ -103,10 +102,11 @@ TuplaAPS* APS (Grafo* G, Emparelhamento* M, int u) {
       else {
         tupla->achouEmparelhamento = true;
         diferencaSimetrica(tupla->T, M, y);
-        return tupla;
         printf("Terminou com um novo emparelhamento\n");
+        return tupla;
       }
     }
   } while (existeArestaXY);
+  printf("Nao achou novo emparelhamento\n");
   return tupla;
 }
