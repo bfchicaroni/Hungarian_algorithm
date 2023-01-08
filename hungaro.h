@@ -7,7 +7,7 @@
 
 TuplaHungaro* alocaMemoriaHungaro(Grafo* G, Emparelhamento* M);
 
-int procuraDesemparelhado(Emparelhamento* M);
+int procuraDesemparelhado(Grafo* G, Emparelhamento* M);
 
 void uniao (bool* A, bool* B, int tamanho);
 

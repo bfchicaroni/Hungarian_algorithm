@@ -25,9 +25,9 @@ TuplaHungaro* alocaMemoriaHungaro(Grafo* G, Emparelhamento* M) {
   return tupla;
 }
 
-int procuraDesemparelhado(Emparelhamento* M) {
+int procuraDesemparelhado(Grafo* G, Emparelhamento* M) {
   int i = 0;
-  while (i < M->nVertices && M->vEmparelhados[i]!=-1) {
+  while (i < M->nVertices && (M->vEmparelhados[i]!=-1 || !G->existe[i])) {
     i++;
   }
   return i;
@@ -58,7 +58,7 @@ void uniaoEmparelhamentoArray (Emparelhamento* Mestrela, int* M) {
   //   printf("%d ", M[j]);
   // }
   // printf("\n");
-  for (int i = 0; i < Mestrela->tamanho; i++) {
+  for (int i = 0; i < Mestrela->nVertices; i++) {
     if (M[i] != -1) {
       Mestrela->vEmparelhados[i] = M[i];
       count++;
@@ -72,8 +72,8 @@ void uniaoEmparelhamentoArray (Emparelhamento* Mestrela, int* M) {
 void subtraiEmparelhamento (Emparelhamento* M, ArvoreAPS* T) {
   int count = 0;
   for(int i = 0; i < M->nVertices; i++) {
-    if (M->vEmparelhados[i] && T->visitado[i]) {
-      M->vEmparelhados[i] = false;
+    if (M->vEmparelhados[i] != -1 && T->visitado[i]) {
+      M->vEmparelhados[i] = -1;
       count++;
     }
   }
@@ -92,7 +92,7 @@ TuplaHungaro* hungaro (Grafo* G, Emparelhamento* M) {
   int u;
   TuplaAPS* aps;
   TuplaHungaro* tupla = alocaMemoriaHungaro(G, M);
-  int desemparelhado = procuraDesemparelhado(M);
+  int desemparelhado = procuraDesemparelhado(G, M);
   //printf("Primeiro desemparelhado: %d\n", desemparelhado);
   int i = 0;
   while(desemparelhado!= M->nVertices) {
@@ -117,7 +117,7 @@ TuplaHungaro* hungaro (Grafo* G, Emparelhamento* M) {
       // imprimeEmparelhamento(M);
       subtraiGrafo(tupla->F,aps->T);
     }
-    desemparelhado = procuraDesemparelhado(M);
+    desemparelhado = procuraDesemparelhado(G, M);
     // printf("Desemparelhado = %d\n", desemparelhado);
   }
   // printf("R B U\n");
