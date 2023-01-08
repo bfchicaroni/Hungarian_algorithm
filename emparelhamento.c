@@ -26,17 +26,19 @@ Emparelhamento* geraEmparelhamentoGuloso(Grafo* G) {
   Vertice* vizinho;
 
   for (i = 0; i < G->n; i++) {
-    if (!ehCoberto(i, M)) {
-      vizinho = G->vertices[i].next;
-      while( vizinho != NULL) {
-        if (!ehCoberto(vizinho->rotulo, M)) {
-          M->vEmparelhados[i] = vizinho->rotulo;
-          M->vEmparelhados[vizinho->rotulo] = i;
-          M->tamanho ++;
-          vizinho = NULL; //essa linha serve para parar o while
-        }
-        else {
-          vizinho = vizinho->next;
+    if(G->existe[i]) {
+      if (!ehCoberto(i, M)) {
+        vizinho = G->vertices[i].next;
+        while( vizinho != NULL) {
+          if (!ehCoberto(vizinho->rotulo, M)) {
+            M->vEmparelhados[i] = vizinho->rotulo;
+            M->vEmparelhados[vizinho->rotulo] = i;
+            M->tamanho ++;
+            vizinho = NULL; //essa linha serve para parar o while
+          }
+          else {
+            vizinho = vizinho->next;
+          }
         }
       }
     }
@@ -45,7 +47,6 @@ Emparelhamento* geraEmparelhamentoGuloso(Grafo* G) {
 }
 
 void imprimeEmparelhamento(Emparelhamento* M) {
-  printf("================================================\n");
   printf("Imprimindo emparelhamento de tamanho %d\n", M->tamanho);
   int i;
   for(i=0; i < M->nVertices; i++) {
@@ -55,6 +56,7 @@ void imprimeEmparelhamento(Emparelhamento* M) {
       }
     }
   }
+  printf("================================================\n");
 }
 
 bool ehCoberto(int vertice, Emparelhamento* M) {

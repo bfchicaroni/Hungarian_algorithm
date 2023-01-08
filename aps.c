@@ -56,57 +56,58 @@ TuplaAPS* APS (Grafo* G, Emparelhamento* M, int u) {
   int ini = 0;
   int fim = 1;
   int x, y, z;
-  //printf("Memoria do APS alocada\n");
   
   fila[ini] = u;
-  bool existeArestaXY = true;
   x = fila[ini];
+  bool existeArestaXY = true;
+  bool fimDosVizinhos = false;
   Vertice* vizX = G->vertices[x].next;
-  y = vizX->rotulo;
-  vizX = vizX->next;
   tupla->achouEmparelhamento = false;
   tupla->T->visitado[x] = true;
   tupla->Rt[x] = true;
   tupla->T->pai[x] = x;
-  while(existeArestaXY) {
-    tupla->T->visitado[y] = true;
-    tupla->Bt[y] = true;
-    tupla->T->pai[y] = x;
-    z = M->vEmparelhados[y];
-    if(z == -1) {
-      tupla->achouEmparelhamento = true;
-      diferencaSimetrica(tupla->T, M, y);
-      //printf("Terminou com um novo emparelhamento\n");
-      return tupla;
-    }
-    else { 
-      tupla->T->visitado[z] = true;
-      tupla->Rt[z] = true;
-      tupla->Mt[z] = y;
-      tupla->Mt[y] = z;
-      tupla->T->pai[z] = y;
-    }
-    fila[fim] = z;
-    fim++;
-    bool fimDosVizinhos = false; //
+
+  do {
     do {
-      if (vizX == NULL) { //
-        fimDosVizinhos = true; //
-        break; //
-      } //
+      if(vizX == NULL) {
+        fimDosVizinhos = true;
+        break;
+      }
       y = vizX->rotulo;
       vizX = vizX->next;
-    } while(tupla->T->visitado[y]); //
+    } while(tupla->T->visitado[y]);
     if (fimDosVizinhos) {
-      ini++;
-      x = fila[ini];
-      if (ini == fim) {
-        existeArestaXY = false;
-      } else {
+      if (ini != fim) {
+        x = fila[ini];
+        ini++;
         vizX = G->vertices[x].next;
-        y = vizX->rotulo; //
+        fimDosVizinhos = false;
+      } else {
+        existeArestaXY = false;
       }
     }
-  }
+    else {
+      tupla->T->visitado[y] = true;
+      tupla->Bt[y] = true;
+      tupla->T->pai[y] = x;
+      z = M->vEmparelhados[y];
+      if (z != -1) {
+        fila[fim] = z;
+        fim ++;
+        tupla->T->visitado[z] = true;
+        tupla->Rt[z] = true;
+        tupla->Mt[z] = y;
+        tupla->Mt[y] = z;
+        tupla->T->pai[z] = y;
+      }
+      else {
+        tupla->achouEmparelhamento = true;
+        diferencaSimetrica(tupla->T, M, y);
+        // printf("[APS] Terminou com um novo emparelhamento\n");
+        return tupla;
+      }
+    }
+  } while (existeArestaXY);
+  // printf("[APS] Nao achou novo emparelhamento\n");
   return tupla;
 }
