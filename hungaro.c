@@ -42,7 +42,7 @@ void uniao (bool* A, bool* B, int tamanho) {
 }
 
 void uniaoEmparelhamento (Emparelhamento* Mestrela, Emparelhamento* M) {
-  for (int i = 0; i < Mestrela->tamanho; i++) {
+  for (int i = 0; i < Mestrela->nVertices; i++) {
     if (M->vEmparelhados[i] != -1) {
       Mestrela->vEmparelhados[i] = M->vEmparelhados[i];
     }
