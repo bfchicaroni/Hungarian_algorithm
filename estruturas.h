@@ -42,4 +42,12 @@ typedef struct TuplaAPS {
   int* Mt;
 } TuplaAPS;
 
+typedef struct TuplaHungaro {
+  ArvoreAPS** tau;
+  bool* R;
+  bool* B;
+  Emparelhamento* Mestrela;
+  bool* U;
+  Grafo* F;
+} TuplaHungaro;
 #endif
