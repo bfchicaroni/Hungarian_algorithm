@@ -13,6 +13,9 @@ bool ehVizinho (int indiceVerticePrincipal, int rotuloVerticeVizinho, Grafo *G);
 // Remove um vértice da lista de vizinhos de um vértice
 void removerVizinho(int rotuloVizinho, int rotuloVertice, Grafo *G);
 
+//Remove um vértice de um grafo
+void removeVertice(int rotuloDoVerticeRemovido, Grafo* G);
+
 //Remove uma aresta de um grafo
 void removeAresta(int rotuloVerticeA, int rotuloVerticeB, Grafo* G);
 

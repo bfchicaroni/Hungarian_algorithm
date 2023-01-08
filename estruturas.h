@@ -13,7 +13,9 @@ typedef struct Vertice {
 //Estrutura que representa um grafo.
 typedef struct Grafo {
   Vertice* vertices;
+  bool* existe;
   int n; //qtde_vertices
+  int nExistentes;
   int m; //qtde_arestas
   int maxArestas;
 } Grafo;
