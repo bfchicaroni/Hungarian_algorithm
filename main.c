@@ -214,6 +214,104 @@ void testeHungaro4 () {
   imprimeEmparelhamento(hungarian->Mestrela);
 }
 
+void testeHungaro5 () {
+  Grafo* G = constroiGrafo(20);
+
+  criaAresta(0, 10, G);
+  criaAresta(1, 10, G);
+  criaAresta(1, 11, G);
+  criaAresta(1, 12, G);
+  criaAresta(2, 13, G);
+  criaAresta(3, 14, G);
+  criaAresta(4, 15, G);
+  criaAresta(5, 18, G);
+  criaAresta(6, 17, G);
+  criaAresta(7, 15, G);
+  criaAresta(8, 16, G);
+  criaAresta(9, 19, G);
+
+  printf("Grafo inicial\n");
+  imprimeGrafo(G);
+
+  printf("Emparelhamento inicial\n");
+  Emparelhamento* M = geraEmparelhamentoGuloso(G);
+  imprimeEmparelhamento(M);
+
+  TuplaHungaro* hungarian = hungaro(G, M);
+
+  printf("Emparelhamento otimo\n");
+  imprimeEmparelhamento(hungarian->Mestrela);
+}
+
+void testeHungaro6 () {
+  Grafo* G = constroiGrafo(10);
+
+  criaAresta(0, 6, G);
+  criaAresta(1, 5, G);
+  criaAresta(2, 6, G);
+  criaAresta(3, 7, G);
+  criaAresta(3, 9, G);
+  criaAresta(4, 8, G);
+
+  printf("Grafo inicial\n");
+  imprimeGrafo(G);
+
+  printf("Emparelhamento inicial\n");
+  Emparelhamento* M = geraEmparelhamentoGuloso(G);
+  imprimeEmparelhamento(M);
+
+  TuplaHungaro* hungarian = hungaro(G, M);
+
+  printf("Emparelhamento otimo\n");
+  imprimeEmparelhamento(hungarian->Mestrela);
+}
+
+void testeHungaro7 () {
+  Grafo* G = constroiGrafo(10);
+
+  criaAresta(0, 6, G);
+  criaAresta(1, 6, G);
+  criaAresta(2, 6, G);
+  criaAresta(4, 6, G);
+
+  printf("Grafo inicial\n");
+  imprimeGrafo(G);
+
+  printf("Emparelhamento inicial\n");
+  Emparelhamento* M = geraEmparelhamentoGuloso(G);
+  imprimeEmparelhamento(M);
+
+  TuplaHungaro* hungarian = hungaro(G, M);
+
+  printf("Emparelhamento otimo\n");
+  imprimeEmparelhamento(hungarian->Mestrela);
+}
+
+void testeHungaro8 () {
+  Grafo* G = constroiGrafo(12);
+
+  criaAresta(0, 5, G);
+  criaAresta(0, 6, G);
+  criaAresta(1, 7, G);
+  criaAresta(1, 11, G);
+  criaAresta(2, 8, G);
+  criaAresta(3, 9, G);
+  criaAresta(3, 11, G);
+  criaAresta(4, 10, G);
+
+  printf("Grafo inicial\n");
+  imprimeGrafo(G);
+
+  printf("Emparelhamento inicial\n");
+  Emparelhamento* M = geraEmparelhamentoGuloso(G);
+  imprimeEmparelhamento(M);
+
+  TuplaHungaro* hungarian = hungaro(G, M);
+
+  printf("Emparelhamento otimo\n");
+  imprimeEmparelhamento(hungarian->Mestrela);
+}
+
 int main(void) {
   printf("Iniciando...\n");
   // int qtde_vertices = 5;
@@ -234,6 +332,14 @@ int main(void) {
   // testeHungaro3();
 
   // testeHungaro4();
+
+  // testeHungaro5();
+
+  // testeHungaro6();
+
+  // testeHungaro7();
+
+  // testeHungaro8();
 
   printf("Acabou\n");
  
