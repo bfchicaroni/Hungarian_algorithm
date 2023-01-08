@@ -30,5 +30,83 @@ Emparelhamento* diferencaSimetrica(ArvoreAPS* T, Emparelhamento* M, int y) {
   M->vEmparelhados[verticeAtual] = T->pai[verticeAtual];
   M->vEmparelhados[T->pai[verticeAtual]] = verticeAtual;
   M->tamanho++;
-  return M;
+}
+
+TuplaAPS* alocaMemoriaAPS (Grafo* G) {
+  TuplaAPS* tupla;
+  tupla = malloc(sizeof(TuplaAPS));
+  tupla->T = alocaArvore(G);
+  tupla->Rt = malloc(G->n * sizeof(bool));
+  tupla->Bt = malloc(G->n * sizeof(bool));
+  tupla->Mt = malloc(G->n * sizeof(int));
+
+  int i;
+  for (i = 0; i < G->n; i++) {
+    tupla->Rt[i] = false;
+    tupla->Bt[i] = false;
+    tupla->Mt[i] = -1;
+  }
+  return tupla;
+}
+
+TuplaAPS* APS (Grafo* G, Emparelhamento* M, int u) {
+  TuplaAPS* tupla = alocaMemoriaAPS(G);
+  int* fila = malloc(G->n*sizeof(int));
+  int ini = 0;
+  int fim = 1;
+  int x, y, z;
+  printf("Memoria do APS alocada\n");
+  
+  fila[ini] = u;
+  x = fila[ini];
+  bool existeArestaXY = true;
+  bool fimDosVizinhos = false;
+  Vertice* vizX = G->vertices[x].next;
+  tupla->achouEmparelhamento = false;
+  tupla->T->visitado[x] = true;
+  tupla->Rt[x] = true;
+  tupla->T->pai[x] = x;
+
+  do {
+    do {
+      if(vizX != NULL) {
+        fimDosVizinhos = true;
+        break;
+      }
+      y = vizX->rotulo;
+      vizX = vizX->next;
+    } while(tupla->T->visitado[y]);
+    if (fimDosVizinhos) {
+      if (ini != fim) {
+        x = fila[ini];
+        ini++;
+        vizX = G->vertices[x].next;
+        fimDosVizinhos = false;
+      } else {
+        existeArestaXY = false;
+      }
+    }
+    else {
+      tupla->T->visitado[y] = true;
+      tupla->Bt[y] = true;
+      tupla->T->pai[y] = x;
+      z = M->vEmparelhados[y];
+      if (z != -1) {
+        fila[fim] = z;
+        fim ++;
+        tupla->T->visitado[z] = true;
+        tupla->Rt[z] = true;
+        tupla->Mt[z] = y;
+        tupla->Mt[y] = z;
+        tupla->T->pai[z] = y;
+      }
+      else {
+        tupla->achouEmparelhamento = true;
+        diferencaSimetrica(tupla->T, M, y);
+        return tupla;
+        printf("Terminou com um novo emparelhamento\n");
+      }
+    }
+  } while (existeArestaXY);
+  return tupla;
 }
