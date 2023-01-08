@@ -52,4 +52,5 @@ typedef struct TuplaHungaro {
   bool* U;
   Grafo* F;
 } TuplaHungaro;
+
 #endif

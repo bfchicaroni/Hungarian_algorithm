@@ -45,12 +45,12 @@ Grafo* criaGrafoTeste(int qtde_vertices) {
   Grafo* G = constroiGrafo(qtde_vertices);
   imprimeGrafo(G);
 
-  criaAresta(3, 2, G);
-  criaAresta(1, 4, G);
-  criaAresta(0, 2, G);
-  criaAresta(3, 0, G);
-  criaAresta(2, 1, G);
-  imprimeGrafo(G);
+  // criaAresta(3, 2, G);
+  // criaAresta(1, 4, G);
+  // criaAresta(0, 2, G);
+  // criaAresta(3, 0, G);
+  // criaAresta(2, 1, G);
+  // imprimeGrafo(G);
 
   return G;
 }

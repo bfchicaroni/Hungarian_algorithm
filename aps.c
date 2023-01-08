@@ -1,4 +1,5 @@
 #include "estruturas.h"
+#include "emparelhamento.h"
 #include "aps.h"
 #include <stdio.h>
 #include <stdlib.h>
