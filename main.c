@@ -171,6 +171,49 @@ void testeHungaro2 () {
   imprimeEmparelhamento(hungarian->Mestrela);
 }
 
+void testeHungaro3 () {
+  Grafo* G = constroiGrafo(10);
+
+  criaAresta(0, 6, G);
+  criaAresta(0, 8, G);
+  criaAresta(1, 5, G);
+  criaAresta(1, 7, G);
+  criaAresta(2, 6, G);
+  criaAresta(2, 8, G);
+  criaAresta(3, 7, G);
+  criaAresta(3, 9, G);
+  criaAresta(4, 6, G);
+  criaAresta(4, 8, G);
+
+  printf("Grafo inicial\n");
+  imprimeGrafo(G);
+
+  printf("Emparelhamento inicial\n");
+  Emparelhamento* M = alocaEmparelhamento(G);
+  imprimeEmparelhamento(M);
+
+  TuplaHungaro* hungarian = hungaro(G, M);
+
+  printf("Emparelhamento otimo\n");
+  imprimeEmparelhamento(hungarian->Mestrela);
+}
+
+void testeHungaro4 () {
+  Grafo* G = constroiGrafo(10);
+
+  printf("Grafo inicial\n");
+  imprimeGrafo(G);
+
+  printf("Emparelhamento inicial\n");
+  Emparelhamento* M = alocaEmparelhamento(G);
+  imprimeEmparelhamento(M);
+
+  TuplaHungaro* hungarian = hungaro(G, M);
+
+  printf("Emparelhamento otimo\n");
+  imprimeEmparelhamento(hungarian->Mestrela);
+}
+
 int main(void) {
   printf("Iniciando...\n");
   // int qtde_vertices = 5;
@@ -187,6 +230,10 @@ int main(void) {
   // testeHungaro1();
 
   // testeHungaro2();
+
+  // testeHungaro3();
+
+  // testeHungaro4();
 
   printf("Acabou\n");
  
