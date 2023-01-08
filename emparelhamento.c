@@ -47,7 +47,6 @@ Emparelhamento* geraEmparelhamentoGuloso(Grafo* G) {
 }
 
 void imprimeEmparelhamento(Emparelhamento* M) {
-  printf("================================================\n");
   printf("Imprimindo emparelhamento de tamanho %d\n", M->tamanho);
   int i;
   for(i=0; i < M->nVertices; i++) {
@@ -57,6 +56,7 @@ void imprimeEmparelhamento(Emparelhamento* M) {
       }
     }
   }
+  printf("================================================\n");
 }
 
 bool ehCoberto(int vertice, Emparelhamento* M) {

@@ -156,7 +156,6 @@ void imprimeArestas(Grafo *G) {
 
 //Imprime na tela a estrutura que representa o grafo
 void imprimeGrafo(Grafo* G){
-  printf("================================================\n");
   int i;
   Vertice* vg = G->vertices;
   bool* existeVertice = G->existe;
@@ -175,4 +174,5 @@ void imprimeGrafo(Grafo* G){
   printf("Quantidade de vertices: %d\n", G->nExistentes);
   printf("Quantidade de arestas: %d\n", G->m);
   imprimeArestas(G);
+  printf("================================================\n");
 }
