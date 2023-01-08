@@ -102,11 +102,11 @@ TuplaAPS* APS (Grafo* G, Emparelhamento* M, int u) {
       else {
         tupla->achouEmparelhamento = true;
         diferencaSimetrica(tupla->T, M, y);
-        printf("Terminou com um novo emparelhamento\n");
+        // printf("[APS] Terminou com um novo emparelhamento\n");
         return tupla;
       }
     }
   } while (existeArestaXY);
-  printf("Nao achou novo emparelhamento\n");
+  // printf("[APS] Nao achou novo emparelhamento\n");
   return tupla;
 }

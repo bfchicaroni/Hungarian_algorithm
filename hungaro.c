@@ -53,6 +53,11 @@ void uniaoEmparelhamento (Emparelhamento* Mestrela, Emparelhamento* M) {
 
 void uniaoEmparelhamentoArray (Emparelhamento* Mestrela, int* M) {
   int count = 0;
+  // printf("Tamanho Mestrela: %d\n", Mestrela->nVertices);
+  // for (int j = 0; j < Mestrela->nVertices; j++) {
+  //   printf("%d ", M[j]);
+  // }
+  // printf("\n");
   for (int i = 0; i < Mestrela->tamanho; i++) {
     if (M[i] != -1) {
       Mestrela->vEmparelhados[i] = M[i];
@@ -60,6 +65,8 @@ void uniaoEmparelhamentoArray (Emparelhamento* Mestrela, int* M) {
     }
   }
   Mestrela->tamanho += (count/2);
+  // printf("Mestrela:\n");
+  // imprimeEmparelhamento(Mestrela);
 }
 
 void subtraiEmparelhamento (Emparelhamento* M, ArvoreAPS* T) {
@@ -86,33 +93,37 @@ TuplaHungaro* hungaro (Grafo* G, Emparelhamento* M) {
   TuplaAPS* aps;
   TuplaHungaro* tupla = alocaMemoriaHungaro(G, M);
   int desemparelhado = procuraDesemparelhado(M);
+  //printf("Primeiro desemparelhado: %d\n", desemparelhado);
   int i = 0;
   while(desemparelhado!= M->nVertices) {
     u = desemparelhado;
-    printf("u = %d\n", u);
+    //printf("u = %d\n", u);
     aps = APS(G, M, u);
-    imprimeEmparelhamento(M);
+    // imprimeEmparelhamento(M);
     if(!aps->achouEmparelhamento) {
-      printf("Não achou mais emparelhamento");
+      //printf("Nao achou mais emparelhamento\n");
       tupla->tau[i] = aps->T;
       i++;
       uniao(tupla->R,aps->Rt,G->n);
       uniao(tupla->B,aps->Bt,G->n);
       tupla->U[u] = true;
-      printf("R B U\n");
-      for (int j = 0; j < G->n; j++) {
-        printf("%d %d %d\n", tupla->R[j], tupla->B[j], tupla->U[j]);
-      }
+      // printf("R B U\n");
+      // for (int j = 0; j < G->n; j++) {
+      //   printf("%d %d %d\n", tupla->R[j], tupla->B[j], tupla->U[j]);
+      // }
       uniaoEmparelhamentoArray(tupla->Mestrela, aps->Mt);
       subtraiEmparelhamento(M, aps->T);
+      // printf("M - E(T):\n");
+      // imprimeEmparelhamento(M);
       subtraiGrafo(tupla->F,aps->T);
     }
     desemparelhado = procuraDesemparelhado(M);
+    // printf("Desemparelhado = %d\n", desemparelhado);
   }
-  printf("R B U\n");
-  for (int j = 0; j < G->n; j++) {
-    printf("%d %d %d\n", tupla->R[j], tupla->B[j], tupla->U[j]);
-  }
+  // printf("R B U\n");
+  // for (int j = 0; j < G->n; j++) {
+  //   printf("%d %d %d\n", tupla->R[j], tupla->B[j], tupla->U[j]);
+  // }
   uniaoEmparelhamento(tupla->Mestrela, M);
   return tupla;
 }
