@@ -26,9 +26,9 @@ void adicionarVizinho(int rotuloNovoVizinho, int rotuloVertice, Grafo* G);
 void criaAresta(int rotuloVerticeA, int rotuloVerticeB, Grafo* G);
 
 //Imprime na tela a lista de arestas do grafo
-void imprimeArestas(Grafo *G);
+void imprimeArestas(Grafo *G, FILE* foutptr);
 
 //Imprime na tela a estrutura que representa o grafo
-void imprimeGrafo(Grafo* G);
+void imprimeGrafo(Grafo* G, FILE* foutptr);
 
 #endif

@@ -6,11 +6,17 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
+#include <string.h>
 
 void testeFuncoesEmparelhamento(Grafo* G) {
   Emparelhamento* M = geraEmparelhamentoGuloso(G);
 
-  imprimeEmparelhamento(M);
+  FILE *foutptr = fopen("result.txt", "w");
+
+  imprimeEmparelhamento(M, foutptr);
+
+  fclose(foutptr); 
+
 
   for(int i = 0; i < 5; i++) {
     if(ehCoberto (i, M) == true){
@@ -23,8 +29,9 @@ void testeFuncoesEmparelhamento(Grafo* G) {
 }
 
 void testeFuncoesBasicasGrafo(Grafo* G){
+  FILE *foutptr = fopen("result.txt", "w");
   removeVertice(1, G);
-  imprimeGrafo(G);
+  imprimeGrafo(G, foutptr);
 
   printf(ehVizinho(1, 2, G)? "true\n":"false\n");
   printf(ehVizinho(2, 1, G)? "true\n":"false\n");
@@ -33,29 +40,33 @@ void testeFuncoesBasicasGrafo(Grafo* G){
 
   removeAresta(1, 2, G);
   criaAresta(4, 3, G);
-  imprimeGrafo(G);
+  imprimeGrafo(G, foutptr);
 
 
   criaAresta(1, 2, G);
   criaAresta(2, 4, G);
-  imprimeGrafo(G);
+  imprimeGrafo(G, foutptr);
+  fclose(foutptr); 
 }
 
 Grafo* criaGrafoTeste(int qtde_vertices) {
+  FILE *foutptr = fopen("result.txt", "w");
   Grafo* G = constroiGrafo(qtde_vertices);
-  imprimeGrafo(G);
+  imprimeGrafo(G, foutptr);
 
   // criaAresta(3, 2, G);
   // criaAresta(1, 4, G);
   // criaAresta(0, 2, G);
   // criaAresta(3, 0, G);
   // criaAresta(2, 1, G);
-  // imprimeGrafo(G);
+  // imprimeGrafo(G, foutptr);
 
+  fclose(foutptr);
   return G;
 }
 
 void testeAPS1 () {
+  FILE *foutptr = fopen("result.txt", "w");
   Grafo* G = constroiGrafo(10);
 
   criaAresta(0, 6, G);
@@ -69,7 +80,7 @@ void testeAPS1 () {
   criaAresta(4, 6, G);
   criaAresta(4, 8, G);
 
-  imprimeGrafo(G);
+  imprimeGrafo(G, foutptr);
 
   Emparelhamento* M = alocaEmparelhamento(G);
 
@@ -78,14 +89,16 @@ void testeAPS1 () {
   M->vEmparelhados[2] = 8;
   M->vEmparelhados[8] = 2;
   M->tamanho = 2;
-  imprimeEmparelhamento(M);
+  imprimeEmparelhamento(M, foutptr);
 
   //TuplaAPS* aps = APS(G, M, 4);
 
-  imprimeEmparelhamento(M);
+  imprimeEmparelhamento(M, foutptr);
+  fclose(foutptr);
 }
 
 void testeAPS2 () {
+  FILE *foutptr = fopen("result.txt", "w");
   Grafo* G = constroiGrafo(10);
 
   criaAresta(0, 6, G);
@@ -99,224 +112,23 @@ void testeAPS2 () {
   // criaAresta(4, 6, G);
   criaAresta(4, 8, G);
 
-  imprimeGrafo(G);
+  imprimeGrafo(G, foutptr);
 
   Emparelhamento* M = alocaEmparelhamento(G);
 
   M->vEmparelhados[0] = 8;
   M->vEmparelhados[8] = 0;
   M->tamanho = 1;
-  imprimeEmparelhamento(M);
+  imprimeEmparelhamento(M, foutptr);
 
   //TuplaAPS* aps = APS(G, M, 6);
 
-  imprimeEmparelhamento(M);
-}
-
-void testeHungaro1 () {
-  Grafo* G = constroiGrafo(10);
-
-  criaAresta(0, 6, G);
-  criaAresta(0, 8, G);
-  criaAresta(1, 5, G);
-  criaAresta(1, 7, G);
-  criaAresta(2, 6, G);
-  criaAresta(2, 8, G);
-  criaAresta(3, 7, G);
-  criaAresta(3, 9, G);
-  criaAresta(4, 6, G);
-  criaAresta(4, 8, G);
-
-  printf("Grafo inicial\n");
-  imprimeGrafo(G);
-
-  printf("Emparelhamento inicial\n");
-  Emparelhamento* M = geraEmparelhamentoGuloso(G);
-  imprimeEmparelhamento(M);
-
-  TuplaHungaro* hungarian = hungaro(G, M);
-
-  printf("Emparelhamento otimo\n");
-  imprimeEmparelhamento(hungarian->Mestrela);
-}
-
-void testeHungaro2 () {
-  Grafo* G = constroiGrafo(10);
-
-  criaAresta(0, 6, G);
-  criaAresta(0, 8, G);
-  criaAresta(1, 5, G);
-  criaAresta(1, 7, G);
-  criaAresta(2, 6, G);
-  criaAresta(2, 8, G);
-  criaAresta(3, 7, G);
-  criaAresta(3, 9, G);
-  criaAresta(4, 6, G);
-  criaAresta(4, 8, G);
-
-  printf("Grafo inicial\n");
-  imprimeGrafo(G);
-
-  printf("Emparelhamento inicial\n");
-  Emparelhamento* M = alocaEmparelhamento(G);
-
-  M->vEmparelhados[0] = 8;
-  M->vEmparelhados[8] = 0;
-  M->tamanho = 1;
-  imprimeEmparelhamento(M);
-
-  TuplaHungaro* hungarian = hungaro(G, M);
-
-  printf("Emparelhamento otimo\n");
-  imprimeEmparelhamento(hungarian->Mestrela);
-}
-
-void testeHungaro3 () {
-  Grafo* G = constroiGrafo(10);
-
-  criaAresta(0, 6, G);
-  criaAresta(0, 8, G);
-  criaAresta(1, 5, G);
-  criaAresta(1, 7, G);
-  criaAresta(2, 6, G);
-  criaAresta(2, 8, G);
-  criaAresta(3, 7, G);
-  criaAresta(3, 9, G);
-  criaAresta(4, 6, G);
-  criaAresta(4, 8, G);
-
-  printf("Grafo inicial\n");
-  imprimeGrafo(G);
-
-  printf("Emparelhamento inicial\n");
-  Emparelhamento* M = alocaEmparelhamento(G);
-  imprimeEmparelhamento(M);
-
-  TuplaHungaro* hungarian = hungaro(G, M);
-
-  printf("Emparelhamento otimo\n");
-  imprimeEmparelhamento(hungarian->Mestrela);
-}
-
-void testeHungaro4 () {
-  Grafo* G = constroiGrafo(10);
-
-  printf("Grafo inicial\n");
-  imprimeGrafo(G);
-
-  printf("Emparelhamento inicial\n");
-  Emparelhamento* M = alocaEmparelhamento(G);
-  imprimeEmparelhamento(M);
-
-  TuplaHungaro* hungarian = hungaro(G, M);
-
-  printf("Emparelhamento otimo\n");
-  imprimeEmparelhamento(hungarian->Mestrela);
-}
-
-void testeHungaro5 () {
-  Grafo* G = constroiGrafo(20);
-
-  criaAresta(0, 10, G);
-  criaAresta(1, 10, G);
-  criaAresta(1, 11, G);
-  criaAresta(1, 12, G);
-  criaAresta(2, 13, G);
-  criaAresta(3, 14, G);
-  criaAresta(4, 15, G);
-  criaAresta(5, 18, G);
-  criaAresta(6, 17, G);
-  criaAresta(7, 15, G);
-  criaAresta(8, 16, G);
-  criaAresta(9, 19, G);
-
-  printf("Grafo inicial\n");
-  imprimeGrafo(G);
-
-  printf("Emparelhamento inicial\n");
-  Emparelhamento* M = geraEmparelhamentoGuloso(G);
-  imprimeEmparelhamento(M);
-
-  TuplaHungaro* hungarian = hungaro(G, M);
-
-  printf("Emparelhamento otimo\n");
-  imprimeEmparelhamento(hungarian->Mestrela);
-}
-
-void testeHungaro6 () {
-  Grafo* G = constroiGrafo(10);
-
-  criaAresta(0, 6, G);
-  criaAresta(1, 5, G);
-  criaAresta(2, 6, G);
-  criaAresta(3, 7, G);
-  criaAresta(3, 9, G);
-  criaAresta(4, 8, G);
-
-  printf("Grafo inicial\n");
-  imprimeGrafo(G);
-
-  printf("Emparelhamento inicial\n");
-  Emparelhamento* M = geraEmparelhamentoGuloso(G);
-  imprimeEmparelhamento(M);
-
-  TuplaHungaro* hungarian = hungaro(G, M);
-
-  printf("Emparelhamento otimo\n");
-  imprimeEmparelhamento(hungarian->Mestrela);
-}
-
-void testeHungaro7 () {
-  Grafo* G = constroiGrafo(10);
-
-  criaAresta(0, 6, G);
-  criaAresta(1, 6, G);
-  criaAresta(2, 6, G);
-  criaAresta(4, 6, G);
-
-  printf("Grafo inicial\n");
-  imprimeGrafo(G);
-
-  printf("Emparelhamento inicial\n");
-  Emparelhamento* M = geraEmparelhamentoGuloso(G);
-  imprimeEmparelhamento(M);
-
-  TuplaHungaro* hungarian = hungaro(G, M);
-
-  printf("Emparelhamento otimo\n");
-  imprimeEmparelhamento(hungarian->Mestrela);
-}
-
-void testeHungaro8 () {
-  Grafo* G = constroiGrafo(12);
-
-  criaAresta(0, 5, G);
-  criaAresta(0, 6, G);
-  criaAresta(1, 7, G);
-  criaAresta(1, 11, G);
-  criaAresta(2, 8, G);
-  criaAresta(3, 9, G);
-  criaAresta(3, 11, G);
-  criaAresta(4, 10, G);
-
-  printf("Grafo inicial\n");
-  imprimeGrafo(G);
-
-  printf("Emparelhamento inicial\n");
-  Emparelhamento* M = geraEmparelhamentoGuloso(G);
-  imprimeEmparelhamento(M);
-
-  TuplaHungaro* hungarian = hungaro(G, M);
-
-  printf("Emparelhamento otimo\n");
-  imprimeEmparelhamento(hungarian->Mestrela);
+  imprimeEmparelhamento(M, foutptr);
+  fclose(foutptr);
 }
 
 int main(void) {
-  printf("Iniciando...\n");
-  // int qtde_vertices = 5;
-  // Grafo *G = criaGrafoTeste(qtde_vertices);
-  
+
   // testeFuncoesBasicasGrafo(G);
 
   // testeFuncoesEmparelhamento(G);
@@ -325,23 +137,68 @@ int main(void) {
 
   // testeAPS2();
 
-  // testeHungaro1();
+  int vertices, a, b;
+  FILE *fptr;  
+  char mat [2][50];
+  char *ptr;
 
-  // testeHungaro2();
+  printf("Digite o nome do arquivo de entrada: ");
+  char filename[100];
+  scanf("%s", filename);
+  char filepath[] = "C:/Users/biafc/Documents/UFABC/PGC/Hungarian_algorithm/instances/";
 
-  // testeHungaro3();
+  strcat(filepath,filename);
 
-  // testeHungaro4();
+  printf("Procurando o arquivo no caminho:\n%s\n", filepath);
 
-  // testeHungaro5();
+  fptr = fopen(filepath, "r");
 
-  // testeHungaro6();
+  if (fptr != NULL) {
+    char buf[100];
+    fgets(buf, 100, fptr);
+    ptr = strtok(buf, "-\n");
+    vertices = atoi(ptr);
 
-  // testeHungaro7();
+    Grafo *G = constroiGrafo(vertices);
 
-  // testeHungaro8();
+    while (fgets(buf, 100, fptr)) {
+      ptr = strtok(buf, "-\n");
+      int i = 0;
+      while (ptr != NULL) {
+        strcpy(mat[i], ptr);
+        ptr = strtok(NULL, "-\n");
+        i++;
+      }
+      a = atoi(mat[0]);
+      b = atoi(mat[1]);
+      criaAresta(a, b, G);
+    }
 
-  printf("Acabou\n");
- 
+    FILE *foutptr;
+
+    foutptr = fopen("result.txt", "w");
+
+    fprintf(foutptr, "Grafo inicial\n");
+    imprimeGrafo(G, foutptr);
+
+    fprintf(foutptr, "Emparelhamento inicial\n");
+    Emparelhamento *M = geraEmparelhamentoGuloso(G);
+    imprimeEmparelhamento(M, foutptr);
+
+    TuplaHungaro *hungarian = hungaro(G, M);
+
+    fprintf(foutptr, "Emparelhamento otimo\n");
+    imprimeEmparelhamento(hungarian->Mestrela, foutptr);
+
+    fclose(foutptr); 
+
+    printf("Os resultados estao no arquivo result.txt\n");
+
+  } else {
+    printf("Not able to open the file.\n");
+  }
+
+  fclose(fptr);
+
   return 0;
 }

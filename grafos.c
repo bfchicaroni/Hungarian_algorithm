@@ -136,7 +136,7 @@ void criaAresta(int rotuloVerticeA, int rotuloVerticeB, Grafo* G) {
 }
 
 //Imprime na tela a lista de arestas do grafo
-void imprimeArestas(Grafo *G) {
+void imprimeArestas(Grafo *G, FILE* foutptr) {
   int i;
   Vertice* vizinho;
   for (i = 0; i < G->n; i++) {
@@ -145,7 +145,7 @@ void imprimeArestas(Grafo *G) {
         vizinho = G->vertices[i].next;
         while( vizinho != NULL) {
           if (G->existe[vizinho->rotulo] && i < vizinho->rotulo) {
-            printf("|%d|---|%d|\n", i, vizinho->rotulo);
+            fprintf(foutptr, "|%d|---|%d|\n", i, vizinho->rotulo);
           }
           vizinho = vizinho->next;
         }
@@ -155,24 +155,24 @@ void imprimeArestas(Grafo *G) {
 }
 
 //Imprime na tela a estrutura que representa o grafo
-void imprimeGrafo(Grafo* G){
+void imprimeGrafo(Grafo* G, FILE *foutptr){
   int i;
   Vertice* vg = G->vertices;
   bool* existeVertice = G->existe;
   Vertice *atual;
   for(i=0; i < G->n; i++) {
     if(existeVertice[i]) {
-      printf ("|%d|", vg[i].rotulo);
+      fprintf(foutptr, "|%d|", vg[i].rotulo);
       atual = vg[i].next;
       while (atual!=NULL){
-        printf(" -> %d ", atual ->rotulo);
+        fprintf(foutptr, " -> %d ", atual ->rotulo);
         atual = atual->next;
       }
-      printf("\n");
+      fprintf(foutptr, "\n");
     }
   }
-  printf("Quantidade de vertices: %d\n", G->nExistentes);
-  printf("Quantidade de arestas: %d\n", G->m);
-  imprimeArestas(G);
-  printf("================================================\n");
+  fprintf(foutptr, "Quantidade de vertices: %d\n", G->nExistentes);
+  fprintf(foutptr, "Quantidade de arestas: %d\n", G->m);
+  imprimeArestas(G, foutptr);
+  fprintf(foutptr, "================================================\n");
 }

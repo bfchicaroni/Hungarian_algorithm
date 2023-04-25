@@ -11,7 +11,7 @@ Emparelhamento* alocaEmparelhamento (Grafo* G);
 
 Emparelhamento* geraEmparelhamentoGuloso(Grafo* G);
 
-void imprimeEmparelhamento(Emparelhamento* M);
+void imprimeEmparelhamento(Emparelhamento* M, FILE* foutptr);
 
 bool ehCoberto(int vertice, Emparelhamento* M);
 
