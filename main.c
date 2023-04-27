@@ -145,7 +145,7 @@ int main(void) {
   printf("Digite o nome do arquivo de entrada: ");
   char filename[100];
   scanf("%s", filename);
-  char filepath[] = "C:/Users/biafc/Documents/UFABC/PGC/Hungarian_algorithm/instances/";
+  char filepath[] = "instances/";
 
   strcat(filepath,filename);
 
