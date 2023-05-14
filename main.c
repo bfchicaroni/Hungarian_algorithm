@@ -9,11 +9,11 @@
 #include <string.h>
 
 void testeFuncoesEmparelhamento(Graph *G) {
-  Matching *M = geraEmparelhamentoGuloso(G);
+  Matching *M = makeGreedyMatching(G);
 
   FILE *foutptr = fopen("result.txt", "w");
 
-  imprimeEmparelhamento(M, foutptr);
+  printMatching(M, foutptr);
 
   fclose(foutptr);
 
@@ -79,18 +79,18 @@ void testeAPS1() {
 
   printGraph(G, foutptr);
 
-  Matching *M = alocaEmparelhamento(G);
+  Matching *M = allocatesMatching(G);
 
   M->vEmparelhados[1] = 7;
   M->vEmparelhados[7] = 1;
   M->vEmparelhados[2] = 8;
   M->vEmparelhados[8] = 2;
   M->tamanho = 2;
-  imprimeEmparelhamento(M, foutptr);
+  printMatching(M, foutptr);
 
   // TuplaAPS* aps = APS(G, M, 4);
 
-  imprimeEmparelhamento(M, foutptr);
+  printMatching(M, foutptr);
   fclose(foutptr);
 }
 
@@ -111,16 +111,16 @@ void testeAPS2() {
 
   printGraph(G, foutptr);
 
-  Matching *M = alocaEmparelhamento(G);
+  Matching *M = allocatesMatching(G);
 
   M->vEmparelhados[0] = 8;
   M->vEmparelhados[8] = 0;
   M->tamanho = 1;
-  imprimeEmparelhamento(M, foutptr);
+  printMatching(M, foutptr);
 
   // TuplaAPS* aps = APS(G, M, 6);
 
-  imprimeEmparelhamento(M, foutptr);
+  printMatching(M, foutptr);
   fclose(foutptr);
 }
 
@@ -192,26 +192,26 @@ int main(int argc, char *argv[]) {
     }
 
     if (printInputGraph) {
-      fprintf(foutptr, "Graph inicial\n");
+      fprintf(foutptr, "Initial graph\n");
       printGraph(G, foutptr);
     }
 
-    Matching *M = geraEmparelhamentoGuloso(G);
+    Matching *M = makeGreedyMatching(G);
 
     if (printFirstMatching) {
-      fprintf(foutptr, "Matching inicial\n");
-      imprimeEmparelhamento(M, foutptr);
+      fprintf(foutptr, "Initial matching\n");
+      printMatching(M, foutptr);
       fprintf(foutptr, "================================================\n");
     }
 
     TuplaHungaro *hungarian = hungaro(G, M);
 
     if (printInputGraph || printFirstMatching) {
-      fprintf(foutptr, "Matching otimo\n");
+      fprintf(foutptr, "Optimal matching\n");
     }
-    imprimeEmparelhamento(hungarian->Mestrela, foutptr);
+    printMatching(hungarian->Mestrela, foutptr);
 
-    printf("Os resultados estao no arquivo %s\n", outputFile);
+    printf("The results are on the file %s\n", outputFile);
 
     fclose(foutptr);
     fclose(fptr);

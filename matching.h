@@ -2,16 +2,16 @@
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
-#ifndef EMPARELHAMENTO_H_
-#define EMPARELHAMENTO_H_
+#ifndef MATCHING_H_
+#define MATCHING_H_
 
-bool ehEmparelhamento(Graph *G, Matching *M);
+bool isMatching(Graph *G, Matching *M);
 
-Matching *alocaEmparelhamento(Graph *G);
+Matching *allocatesMatching(Graph *G);
 
-Matching *geraEmparelhamentoGuloso(Graph *G);
+Matching *makeGreedyMatching(Graph *G);
 
-void imprimeEmparelhamento(Matching *M, FILE *foutptr);
+void printMatching(Matching *M, FILE *foutptr);
 
 bool ehCoberto(int vertice, Matching *M);
 

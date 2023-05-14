@@ -12,7 +12,7 @@ TuplaHungaro *alocaMemoriaHungaro(Graph *G, Matching *M) {
   tupla->tau = malloc(G->n * sizeof(ArvoreAPS *));
   tupla->R = malloc(G->n * sizeof(bool));
   tupla->B = malloc(G->n * sizeof(bool));
-  tupla->Mestrela = alocaEmparelhamento(G);
+  tupla->Mestrela = allocatesMatching(G);
   tupla->U = malloc(G->n * sizeof(bool));
   tupla->F = G;
 
@@ -41,7 +41,7 @@ void uniao(bool *A, bool *B, int tamanho) {
   }
 }
 
-void uniaoEmparelhamento(Matching *Mestrela, Matching *M) {
+void matchingUnion(Matching *Mestrela, Matching *M) {
   for (int i = 0; i < Mestrela->nVertices; i++) {
     if (M->vEmparelhados[i] != -1) {
       Mestrela->vEmparelhados[i] = M->vEmparelhados[i];
@@ -50,7 +50,7 @@ void uniaoEmparelhamento(Matching *Mestrela, Matching *M) {
   Mestrela->tamanho += M->tamanho;
 }
 
-void uniaoEmparelhamentoArray(Matching *Mestrela, int *M) {
+void matchingUnionArray(Matching *Mestrela, int *M) {
   int count = 0;
   // printf("Tamanho Mestrela: %d\n", Mestrela->nVertices);
   // for (int j = 0; j < Mestrela->nVertices; j++) {
@@ -65,10 +65,10 @@ void uniaoEmparelhamentoArray(Matching *Mestrela, int *M) {
   }
   Mestrela->tamanho += (count / 2);
   // printf("Mestrela:\n");
-  // imprimeEmparelhamento(Mestrela);
+  // printMatching(Mestrela);
 }
 
-void subtraiEmparelhamento(Matching *M, ArvoreAPS *T) {
+void matchingSubtraction(Matching *M, ArvoreAPS *T) {
   int count = 0;
   for (int i = 0; i < M->nVertices; i++) {
     if (M->vEmparelhados[i] != -1 && T->visitado[i]) {
@@ -98,8 +98,8 @@ TuplaHungaro *hungaro(Graph *G, Matching *M) {
     u = desemparelhado;
     // printf("u = %d\n", u);
     aps = APS(G, M, u);
-    // imprimeEmparelhamento(M);
-    if (!aps->achouEmparelhamento) {
+    // printMatching(M);
+    if (!aps->foundMatching) {
       // printf("Nao achou mais emparelhamento\n");
       tupla->tau[i] = aps->T;
       i++;
@@ -110,10 +110,10 @@ TuplaHungaro *hungaro(Graph *G, Matching *M) {
       // for (int j = 0; j < G->n; j++) {
       //   printf("%d %d %d\n", tupla->R[j], tupla->B[j], tupla->U[j]);
       // }
-      uniaoEmparelhamentoArray(tupla->Mestrela, aps->Mt);
-      subtraiEmparelhamento(M, aps->T);
+      matchingUnionArray(tupla->Mestrela, aps->Mt);
+      matchingSubtraction(M, aps->T);
       // printf("M - E(T):\n");
-      // imprimeEmparelhamento(M);
+      // printMatching(M);
       subtraiGrafo(tupla->F, aps->T);
     }
     desemparelhado = procuraDesemparelhado(G, M);
@@ -123,6 +123,6 @@ TuplaHungaro *hungaro(Graph *G, Matching *M) {
   // for (int j = 0; j < G->n; j++) {
   //   printf("%d %d %d\n", tupla->R[j], tupla->B[j], tupla->U[j]);
   // }
-  uniaoEmparelhamento(tupla->Mestrela, M);
+  matchingUnion(tupla->Mestrela, M);
   return tupla;
 }

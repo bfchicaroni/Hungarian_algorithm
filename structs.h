@@ -35,7 +35,7 @@ typedef struct ArvoreAPS {
 } ArvoreAPS;
 
 typedef struct TuplaAPS {
-  bool achouEmparelhamento;
+  bool foundMatching;
   ArvoreAPS *T;
   int u;
   bool *Rt;

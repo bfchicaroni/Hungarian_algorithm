@@ -11,11 +11,11 @@ int procuraDesemparelhado(Graph *G, Matching *M);
 
 void uniao(bool *A, bool *B, int tamanho);
 
-void uniaoEmparelhamento(Matching *Mestrela, Matching *M);
+void matchingUnion(Matching *Mestrela, Matching *M);
 
-void uniaoEmparelhamentoArray(Matching *Mestrela, int *M);
+void matchingUnionArray(Matching *Mestrela, int *M);
 
-void subtraiEmparelhamento(Matching *M, ArvoreAPS *T);
+void matchingSubtraction(Matching *M, ArvoreAPS *T);
 
 void subtraiGrafo(Graph *F, ArvoreAPS *T);
 

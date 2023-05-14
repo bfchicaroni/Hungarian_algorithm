@@ -62,7 +62,7 @@ TuplaAPS *APS(Graph *G, Matching *M, int u) {
   bool existeArestaXY = true;
   bool fimDosVizinhos = false;
   Vertice *vizX = G->vertices[x].next;
-  tupla->achouEmparelhamento = false;
+  tupla->foundMatching = false;
   tupla->T->visitado[x] = true;
   tupla->Rt[x] = true;
   tupla->T->pai[x] = x;
@@ -99,7 +99,7 @@ TuplaAPS *APS(Graph *G, Matching *M, int u) {
         tupla->Mt[y] = z;
         tupla->T->pai[z] = y;
       } else {
-        tupla->achouEmparelhamento = true;
+        tupla->foundMatching = true;
         diferencaSimetrica(tupla->T, M, y);
         // printf("[APS] Terminou com um novo emparelhamento\n");
         return tupla;

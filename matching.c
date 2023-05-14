@@ -5,7 +5,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-Matching *alocaEmparelhamento(Graph *G) {
+Matching *allocatesMatching(Graph *G) {
   Matching *M;
   M = malloc(sizeof(Matching));
   M->vEmparelhados = malloc(G->n * sizeof(int));
@@ -19,8 +19,8 @@ Matching *alocaEmparelhamento(Graph *G) {
   return M;
 }
 
-Matching *geraEmparelhamentoGuloso(Graph *G) {
-  Matching *M = alocaEmparelhamento(G);
+Matching *makeGreedyMatching(Graph *G) {
+  Matching *M = allocatesMatching(G);
 
   int i;
   Vertice *vizinho;
@@ -45,7 +45,7 @@ Matching *geraEmparelhamentoGuloso(Graph *G) {
   return M;
 }
 
-void imprimeEmparelhamento(Matching *M, FILE *foutptr) {
+void printMatching(Matching *M, FILE *foutptr) {
   fprintf(foutptr, "%d\n", M->tamanho);
   int i;
   for (i = 0; i < M->nVertices; i++) {
