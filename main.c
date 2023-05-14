@@ -1,15 +1,15 @@
 #include "aps.h"
-#include "emparelhamento.h"
-#include "estruturas.h"
-#include "grafos.h"
-#include "hungaro.h"
+#include "graph.h"
+#include "hungarian.h"
+#include "matching.h"
+#include "structs.h"
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
-void testeFuncoesEmparelhamento(Grafo *G) {
-  Emparelhamento *M = geraEmparelhamentoGuloso(G);
+void testeFuncoesEmparelhamento(Graph *G) {
+  Matching *M = geraEmparelhamentoGuloso(G);
 
   FILE *foutptr = fopen("result.txt", "w");
 
@@ -26,10 +26,10 @@ void testeFuncoesEmparelhamento(Grafo *G) {
   }
 }
 
-void testeFuncoesBasicasGrafo(Grafo *G) {
+void testeFuncoesBasicasGrafo(Graph *G) {
   FILE *foutptr = fopen("result.txt", "w");
   removeVertice(1, G);
-  imprimeGrafo(G, foutptr);
+  printGraph(G, foutptr);
 
   printf(ehVizinho(1, 2, G) ? "true\n" : "false\n");
   printf(ehVizinho(2, 1, G) ? "true\n" : "false\n");
@@ -38,25 +38,25 @@ void testeFuncoesBasicasGrafo(Grafo *G) {
 
   removeAresta(1, 2, G);
   criaAresta(4, 3, G);
-  imprimeGrafo(G, foutptr);
+  printGraph(G, foutptr);
 
   criaAresta(1, 2, G);
   criaAresta(2, 4, G);
-  imprimeGrafo(G, foutptr);
+  printGraph(G, foutptr);
   fclose(foutptr);
 }
 
-Grafo *criaGrafoTeste(int qtde_vertices) {
+Graph *criaGrafoTeste(int qtde_vertices) {
   FILE *foutptr = fopen("result.txt", "w");
-  Grafo *G = constroiGrafo(qtde_vertices);
-  imprimeGrafo(G, foutptr);
+  Graph *G = buildGraph(qtde_vertices);
+  printGraph(G, foutptr);
 
   // criaAresta(3, 2, G);
   // criaAresta(1, 4, G);
   // criaAresta(0, 2, G);
   // criaAresta(3, 0, G);
   // criaAresta(2, 1, G);
-  // imprimeGrafo(G, foutptr);
+  // printGraph(G, foutptr);
 
   fclose(foutptr);
   return G;
@@ -64,7 +64,7 @@ Grafo *criaGrafoTeste(int qtde_vertices) {
 
 void testeAPS1() {
   FILE *foutptr = fopen("result.txt", "w");
-  Grafo *G = constroiGrafo(10);
+  Graph *G = buildGraph(10);
 
   criaAresta(0, 6, G);
   criaAresta(0, 8, G);
@@ -77,9 +77,9 @@ void testeAPS1() {
   criaAresta(4, 6, G);
   criaAresta(4, 8, G);
 
-  imprimeGrafo(G, foutptr);
+  printGraph(G, foutptr);
 
-  Emparelhamento *M = alocaEmparelhamento(G);
+  Matching *M = alocaEmparelhamento(G);
 
   M->vEmparelhados[1] = 7;
   M->vEmparelhados[7] = 1;
@@ -96,7 +96,7 @@ void testeAPS1() {
 
 void testeAPS2() {
   FILE *foutptr = fopen("result.txt", "w");
-  Grafo *G = constroiGrafo(10);
+  Graph *G = buildGraph(10);
 
   criaAresta(0, 6, G);
   criaAresta(0, 8, G);
@@ -109,9 +109,9 @@ void testeAPS2() {
   // criaAresta(4, 6, G);
   criaAresta(4, 8, G);
 
-  imprimeGrafo(G, foutptr);
+  printGraph(G, foutptr);
 
-  Emparelhamento *M = alocaEmparelhamento(G);
+  Matching *M = alocaEmparelhamento(G);
 
   M->vEmparelhados[0] = 8;
   M->vEmparelhados[8] = 0;
@@ -154,7 +154,7 @@ int main(int argc, char *argv[]) {
     ptr = strtok(buf, "-\n");
     vertices = atoi(ptr);
 
-    Grafo *G = constroiGrafo(vertices);
+    Graph *G = buildGraph(vertices);
 
     while (fgets(buf, 100, fptr)) {
       ptr = strtok(buf, "-\n");
@@ -178,36 +178,36 @@ int main(int argc, char *argv[]) {
 
     foutptr = fopen(outputpath, "w");
 
-    bool printGraph;
+    bool printInputGraph;
     bool printFirstMatching;
     if (argc <= 4) {
-      printGraph = false;
+      printInputGraph = false;
       printFirstMatching = false;
     } else if (argc == 5) {
-      printGraph = !strcmp("true", argv[4]);
+      printInputGraph = !strcmp("true", argv[4]);
       printFirstMatching = false;
     } else {
-      printGraph = !strcmp("true", argv[4]);
+      printInputGraph = !strcmp("true", argv[4]);
       printFirstMatching = !strcmp("true", argv[5]);
     }
 
-    if (printGraph) {
-      fprintf(foutptr, "Grafo inicial\n");
-      imprimeGrafo(G, foutptr);
+    if (printInputGraph) {
+      fprintf(foutptr, "Graph inicial\n");
+      printGraph(G, foutptr);
     }
 
-    Emparelhamento *M = geraEmparelhamentoGuloso(G);
+    Matching *M = geraEmparelhamentoGuloso(G);
 
     if (printFirstMatching) {
-      fprintf(foutptr, "Emparelhamento inicial\n");
+      fprintf(foutptr, "Matching inicial\n");
       imprimeEmparelhamento(M, foutptr);
       fprintf(foutptr, "================================================\n");
     }
 
     TuplaHungaro *hungarian = hungaro(G, M);
 
-    if (printGraph || printFirstMatching) {
-      fprintf(foutptr, "Emparelhamento otimo\n");
+    if (printInputGraph || printFirstMatching) {
+      fprintf(foutptr, "Matching otimo\n");
     }
     imprimeEmparelhamento(hungarian->Mestrela, foutptr);
 

@@ -10,22 +10,22 @@ typedef struct Vertice {
 } Vertice;
 
 // Estrutura que representa um grafo.
-typedef struct Grafo {
+typedef struct Graph {
   Vertice *vertices;
   bool *existe;
   int n; // qtde_vertices
   int nExistentes;
   int m; // qtde_arestas
   int maxArestas;
-} Grafo;
+} Graph;
 
 // Estrutura que representa um emparelhamento.
-typedef struct Emparelhamento {
+typedef struct Matching {
   int *vEmparelhados;
   int nVertices;
   int tamanho;
   int maxArestas;
-} Emparelhamento;
+} Matching;
 
 // Estrutura que representa a árvore APS
 typedef struct ArvoreAPS {
@@ -47,9 +47,9 @@ typedef struct TuplaHungaro {
   ArvoreAPS **tau;
   bool *R;
   bool *B;
-  Emparelhamento *Mestrela;
+  Matching *Mestrela;
   bool *U;
-  Grafo *F;
+  Graph *F;
 } TuplaHungaro;
 
 #endif

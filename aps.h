@@ -1,13 +1,13 @@
-#include "estruturas.h"
+#include "structs.h"
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
 #ifndef APS_H_
 #define APS_H_
 
-ArvoreAPS *alocaArvore(Grafo *G);
+ArvoreAPS *alocaArvore(Graph *G);
 
-void diferencaSimetrica(ArvoreAPS *T, Emparelhamento *M, int y);
+void diferencaSimetrica(ArvoreAPS *T, Matching *M, int y);
 
-TuplaAPS *APS(Grafo *G, Emparelhamento *M, int u);
+TuplaAPS *APS(Graph *G, Matching *M, int u);
 #endif

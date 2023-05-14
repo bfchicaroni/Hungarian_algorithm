@@ -1,11 +1,11 @@
 #include "aps.h"
-#include "emparelhamento.h"
-#include "estruturas.h"
+#include "matching.h"
+#include "structs.h"
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
 
-ArvoreAPS *alocaArvore(Grafo *G) {
+ArvoreAPS *alocaArvore(Graph *G) {
   ArvoreAPS *T;
   T = malloc(sizeof(ArvoreAPS));
   T->pai = malloc(G->n * sizeof(int));
@@ -19,7 +19,7 @@ ArvoreAPS *alocaArvore(Grafo *G) {
   return T;
 }
 
-void diferencaSimetrica(ArvoreAPS *T, Emparelhamento *M, int y) {
+void diferencaSimetrica(ArvoreAPS *T, Matching *M, int y) {
   int verticeAtual = y;
   while (T->pai[T->pai[verticeAtual]] != T->pai[verticeAtual]) {
     M->vEmparelhados[verticeAtual] = T->pai[verticeAtual];
@@ -33,7 +33,7 @@ void diferencaSimetrica(ArvoreAPS *T, Emparelhamento *M, int y) {
   M->tamanho++;
 }
 
-TuplaAPS *alocaMemoriaAPS(Grafo *G) {
+TuplaAPS *alocaMemoriaAPS(Graph *G) {
   TuplaAPS *tupla;
   tupla = malloc(sizeof(TuplaAPS));
   tupla->T = alocaArvore(G);
@@ -50,7 +50,7 @@ TuplaAPS *alocaMemoriaAPS(Grafo *G) {
   return tupla;
 }
 
-TuplaAPS *APS(Grafo *G, Emparelhamento *M, int u) {
+TuplaAPS *APS(Graph *G, Matching *M, int u) {
   TuplaAPS *tupla = alocaMemoriaAPS(G);
   int *fila = malloc(G->n * sizeof(int));
   int ini = 0;

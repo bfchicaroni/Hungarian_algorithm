@@ -1,13 +1,13 @@
-#include "emparelhamento.h"
-#include "estruturas.h"
-#include "grafos.h"
+#include "matching.h"
+#include "graph.h"
+#include "structs.h"
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
 
-Emparelhamento *alocaEmparelhamento(Grafo *G) {
-  Emparelhamento *M;
-  M = malloc(sizeof(Emparelhamento));
+Matching *alocaEmparelhamento(Graph *G) {
+  Matching *M;
+  M = malloc(sizeof(Matching));
   M->vEmparelhados = malloc(G->n * sizeof(int));
   M->nVertices = G->n;
   M->maxArestas = G->maxArestas;
@@ -19,8 +19,8 @@ Emparelhamento *alocaEmparelhamento(Grafo *G) {
   return M;
 }
 
-Emparelhamento *geraEmparelhamentoGuloso(Grafo *G) {
-  Emparelhamento *M = alocaEmparelhamento(G);
+Matching *geraEmparelhamentoGuloso(Graph *G) {
+  Matching *M = alocaEmparelhamento(G);
 
   int i;
   Vertice *vizinho;
@@ -45,7 +45,7 @@ Emparelhamento *geraEmparelhamentoGuloso(Grafo *G) {
   return M;
 }
 
-void imprimeEmparelhamento(Emparelhamento *M, FILE *foutptr) {
+void imprimeEmparelhamento(Matching *M, FILE *foutptr) {
   fprintf(foutptr, "%d\n", M->tamanho);
   int i;
   for (i = 0; i < M->nVertices; i++) {
@@ -57,6 +57,6 @@ void imprimeEmparelhamento(Emparelhamento *M, FILE *foutptr) {
   }
 }
 
-bool ehCoberto(int vertice, Emparelhamento *M) {
+bool ehCoberto(int vertice, Matching *M) {
   return (M->vEmparelhados[vertice] != -1);
 }

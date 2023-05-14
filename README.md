@@ -4,7 +4,7 @@ Este algoritmo foi desenvolvido com base no Algoritmo de Egerváry, conhecido co
 
 O código foi desenvolvido como parte do Projeto de Graduação em Computação da Universidade Federal do ABC (UFABC) pela aluna Beatriz Favini Chicaroni sob supervisão da Orientadora Profa. Dra. Carla Negri Lintzmayer.
 
-Para compilar utilizar ```gcc main.c grafos.c emparelhamento.c aps.c hungaro.c -o hungarian -Wall```
+Para compilar utilizar ```gcc main.c graph.c matching.c aps.c hungarian.c -o hungarian -Wall```
 
 Para executar no Windows utilizar ```hungarian.exe"```
 

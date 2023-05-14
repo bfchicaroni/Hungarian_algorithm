@@ -1,12 +1,12 @@
 #include "aps.h"
-#include "emparelhamento.h"
-#include "estruturas.h"
-#include "grafos.h"
+#include "graph.h"
+#include "matching.h"
+#include "structs.h"
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
 
-TuplaHungaro *alocaMemoriaHungaro(Grafo *G, Emparelhamento *M) {
+TuplaHungaro *alocaMemoriaHungaro(Graph *G, Matching *M) {
   TuplaHungaro *tupla;
   tupla = malloc(sizeof(TuplaHungaro));
   tupla->tau = malloc(G->n * sizeof(ArvoreAPS *));
@@ -25,7 +25,7 @@ TuplaHungaro *alocaMemoriaHungaro(Grafo *G, Emparelhamento *M) {
   return tupla;
 }
 
-int procuraDesemparelhado(Grafo *G, Emparelhamento *M) {
+int procuraDesemparelhado(Graph *G, Matching *M) {
   int i = 0;
   while (i < M->nVertices && (M->vEmparelhados[i] != -1 || !G->existe[i])) {
     i++;
@@ -41,7 +41,7 @@ void uniao(bool *A, bool *B, int tamanho) {
   }
 }
 
-void uniaoEmparelhamento(Emparelhamento *Mestrela, Emparelhamento *M) {
+void uniaoEmparelhamento(Matching *Mestrela, Matching *M) {
   for (int i = 0; i < Mestrela->nVertices; i++) {
     if (M->vEmparelhados[i] != -1) {
       Mestrela->vEmparelhados[i] = M->vEmparelhados[i];
@@ -50,7 +50,7 @@ void uniaoEmparelhamento(Emparelhamento *Mestrela, Emparelhamento *M) {
   Mestrela->tamanho += M->tamanho;
 }
 
-void uniaoEmparelhamentoArray(Emparelhamento *Mestrela, int *M) {
+void uniaoEmparelhamentoArray(Matching *Mestrela, int *M) {
   int count = 0;
   // printf("Tamanho Mestrela: %d\n", Mestrela->nVertices);
   // for (int j = 0; j < Mestrela->nVertices; j++) {
@@ -68,7 +68,7 @@ void uniaoEmparelhamentoArray(Emparelhamento *Mestrela, int *M) {
   // imprimeEmparelhamento(Mestrela);
 }
 
-void subtraiEmparelhamento(Emparelhamento *M, ArvoreAPS *T) {
+void subtraiEmparelhamento(Matching *M, ArvoreAPS *T) {
   int count = 0;
   for (int i = 0; i < M->nVertices; i++) {
     if (M->vEmparelhados[i] != -1 && T->visitado[i]) {
@@ -79,7 +79,7 @@ void subtraiEmparelhamento(Emparelhamento *M, ArvoreAPS *T) {
   M->tamanho -= (count / 2);
 }
 
-void subtraiGrafo(Grafo *F, ArvoreAPS *T) {
+void subtraiGrafo(Graph *F, ArvoreAPS *T) {
   for (int i = 0; i < T->nVertices; i++) {
     if (T->visitado[i]) {
       removeVertice(i, F);
@@ -87,7 +87,7 @@ void subtraiGrafo(Grafo *F, ArvoreAPS *T) {
   }
 }
 
-TuplaHungaro *hungaro(Grafo *G, Emparelhamento *M) {
+TuplaHungaro *hungaro(Graph *G, Matching *M) {
   int u;
   TuplaAPS *aps;
   TuplaHungaro *tupla = alocaMemoriaHungaro(G, M);

@@ -1,13 +1,13 @@
-#include "grafos.h"
-#include "estruturas.h"
+#include "graph.h"
+#include "structs.h"
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
 
 // Constroi um grafo sem arestas com a qtde de vertices passada como parâmetro
-Grafo *constroiGrafo(int qtde_vertices) {
-  Grafo *G;
-  G = malloc(sizeof(Grafo));
+Graph *buildGraph(int qtde_vertices) {
+  Graph *G;
+  G = malloc(sizeof(Graph));
   G->vertices = malloc(qtde_vertices * sizeof(Vertice));
   G->existe = malloc(qtde_vertices * sizeof(bool));
   int qtde_arestas = (qtde_vertices * (qtde_vertices - 1)) / 2;
@@ -27,7 +27,7 @@ Grafo *constroiGrafo(int qtde_vertices) {
 }
 
 // Dados dois vértices verifica se existe uma aresta entre eles
-bool ehVizinho(int indiceVerticePrincipal, int rotuloVerticeVizinho, Grafo *G) {
+bool ehVizinho(int indiceVerticePrincipal, int rotuloVerticeVizinho, Graph *G) {
 
   if (!G->existe[indiceVerticePrincipal]) {
     return false;
@@ -46,7 +46,7 @@ bool ehVizinho(int indiceVerticePrincipal, int rotuloVerticeVizinho, Grafo *G) {
 }
 
 // Remove um vértice da lista de vizinhos de um vértice
-void removerVizinho(int rotuloVizinho, int rotuloVertice, Grafo *G) {
+void removerVizinho(int rotuloVizinho, int rotuloVertice, Graph *G) {
 
   if (!G->existe[rotuloVertice]) {
     printf("Nao e possivel remover %d dos vizinhos de %d pois %d nao existe\n",
@@ -71,7 +71,7 @@ void removerVizinho(int rotuloVizinho, int rotuloVertice, Grafo *G) {
   }
 }
 
-void removeVertice(int rotuloDoVerticeRemovido, Grafo *G) {
+void removeVertice(int rotuloDoVerticeRemovido, Graph *G) {
   Vertice *vizinho;
   if (G->existe[rotuloDoVerticeRemovido]) {
     if (G->vertices[rotuloDoVerticeRemovido].next != NULL) {
@@ -94,7 +94,7 @@ void removeVertice(int rotuloDoVerticeRemovido, Grafo *G) {
 }
 
 // Remove uma aresta de um grafo
-void removeAresta(int rotuloVerticeA, int rotuloVerticeB, Grafo *G) {
+void removeAresta(int rotuloVerticeA, int rotuloVerticeB, Graph *G) {
   if (G->existe[rotuloVerticeA] && G->existe[rotuloVerticeB]) {
     removerVizinho(rotuloVerticeA, rotuloVerticeB, G);
     removerVizinho(rotuloVerticeB, rotuloVerticeA, G);
@@ -103,7 +103,7 @@ void removeAresta(int rotuloVerticeA, int rotuloVerticeB, Grafo *G) {
 }
 
 // Adiciona um novo nó à vizinhança de um vértice na lista de adjacências
-void adicionarVizinho(int rotuloNovoVizinho, int rotuloVertice, Grafo *G) {
+void adicionarVizinho(int rotuloNovoVizinho, int rotuloVertice, Graph *G) {
 
   if (!G->existe[rotuloVertice]) {
     printf("Nao e possivel adicionar um novo vizinho a %d pois %d nao existe\n",
@@ -130,7 +130,7 @@ void adicionarVizinho(int rotuloNovoVizinho, int rotuloVertice, Grafo *G) {
 }
 
 // Cria uma aresta em um grafo
-void criaAresta(int rotuloVerticeA, int rotuloVerticeB, Grafo *G) {
+void criaAresta(int rotuloVerticeA, int rotuloVerticeB, Graph *G) {
   if (G->existe[rotuloVerticeA] && G->existe[rotuloVerticeB]) {
     adicionarVizinho(rotuloVerticeA, rotuloVerticeB, G);
     adicionarVizinho(rotuloVerticeB, rotuloVerticeA, G);
@@ -139,7 +139,7 @@ void criaAresta(int rotuloVerticeA, int rotuloVerticeB, Grafo *G) {
 }
 
 // Imprime na tela a lista de arestas do grafo
-void imprimeArestas(Grafo *G, FILE *foutptr) {
+void imprimeArestas(Graph *G, FILE *foutptr) {
   int i;
   Vertice *vizinho;
   for (i = 0; i < G->n; i++) {
@@ -158,7 +158,7 @@ void imprimeArestas(Grafo *G, FILE *foutptr) {
 }
 
 // Imprime na tela a estrutura que representa o grafo
-void imprimeGrafo(Grafo *G, FILE *foutptr) {
+void printGraph(Graph *G, FILE *foutptr) {
   int i;
   Vertice *vg = G->vertices;
   bool *existeVertice = G->existe;
