@@ -13,6 +13,6 @@ Matching *makeGreedyMatching(Graph *G);
 
 void printMatching(Matching *M, FILE *foutptr);
 
-bool ehCoberto(int vertice, Matching *M);
+bool ehCoberto(int vertex, Matching *M);
 
 #endif

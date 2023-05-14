@@ -9,7 +9,7 @@
 TuplaHungaro *alocaMemoriaHungaro(Graph *G, Matching *M) {
   TuplaHungaro *tupla;
   tupla = malloc(sizeof(TuplaHungaro));
-  tupla->tau = malloc(G->n * sizeof(ArvoreAPS *));
+  tupla->tau = malloc(G->n * sizeof(APSTree *));
   tupla->R = malloc(G->n * sizeof(bool));
   tupla->B = malloc(G->n * sizeof(bool));
   tupla->Mestrela = allocatesMatching(G);
@@ -27,14 +27,14 @@ TuplaHungaro *alocaMemoriaHungaro(Graph *G, Matching *M) {
 
 int procuraDesemparelhado(Graph *G, Matching *M) {
   int i = 0;
-  while (i < M->nVertices && (M->vEmparelhados[i] != -1 || !G->existe[i])) {
+  while (i < M->nVertices && (M->vEmparelhados[i] != -1 || !G->exists[i])) {
     i++;
   }
   return i;
 }
 
-void uniao(bool *A, bool *B, int tamanho) {
-  for (int i = 0; i < tamanho; i++) {
+void uniao(bool *A, bool *B, int size) {
+  for (int i = 0; i < size; i++) {
     if (B[i]) {
       A[i] = true;
     }
@@ -47,7 +47,7 @@ void matchingUnion(Matching *Mestrela, Matching *M) {
       Mestrela->vEmparelhados[i] = M->vEmparelhados[i];
     }
   }
-  Mestrela->tamanho += M->tamanho;
+  Mestrela->size += M->size;
 }
 
 void matchingUnionArray(Matching *Mestrela, int *M) {
@@ -63,12 +63,12 @@ void matchingUnionArray(Matching *Mestrela, int *M) {
       count++;
     }
   }
-  Mestrela->tamanho += (count / 2);
+  Mestrela->size += (count / 2);
   // printf("Mestrela:\n");
   // printMatching(Mestrela);
 }
 
-void matchingSubtraction(Matching *M, ArvoreAPS *T) {
+void matchingSubtraction(Matching *M, APSTree *T) {
   int count = 0;
   for (int i = 0; i < M->nVertices; i++) {
     if (M->vEmparelhados[i] != -1 && T->visitado[i]) {
@@ -76,13 +76,13 @@ void matchingSubtraction(Matching *M, ArvoreAPS *T) {
       count++;
     }
   }
-  M->tamanho -= (count / 2);
+  M->size -= (count / 2);
 }
 
-void subtraiGrafo(Graph *F, ArvoreAPS *T) {
+void subtraiGrafo(Graph *F, APSTree *T) {
   for (int i = 0; i < T->nVertices; i++) {
     if (T->visitado[i]) {
-      removeVertice(i, F);
+      removeVertex(i, F);
     }
   }
 }

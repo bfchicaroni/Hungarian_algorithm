@@ -5,9 +5,9 @@
 #ifndef APS_H_
 #define APS_H_
 
-ArvoreAPS *alocaArvore(Graph *G);
+APSTree *allocatesTree(Graph *G);
 
-void diferencaSimetrica(ArvoreAPS *T, Matching *M, int y);
+void diferencaSimetrica(APSTree *T, Matching *M, int y);
 
 TuplaAPS *APS(Graph *G, Matching *M, int u);
 #endif

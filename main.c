@@ -28,7 +28,7 @@ void testeFuncoesEmparelhamento(Graph *G) {
 
 void testeFuncoesBasicasGrafo(Graph *G) {
   FILE *foutptr = fopen("result.txt", "w");
-  removeVertice(1, G);
+  removeVertex(1, G);
   printGraph(G, foutptr);
 
   printf(ehVizinho(1, 2, G) ? "true\n" : "false\n");
@@ -36,26 +36,26 @@ void testeFuncoesBasicasGrafo(Graph *G) {
   printf(ehVizinho(2, 3, G) ? "true\n" : "false\n");
   printf(ehVizinho(3, 2, G) ? "true\n" : "false\n");
 
-  removeAresta(1, 2, G);
-  criaAresta(4, 3, G);
+  removeEdge(1, 2, G);
+  addEdge(4, 3, G);
   printGraph(G, foutptr);
 
-  criaAresta(1, 2, G);
-  criaAresta(2, 4, G);
+  addEdge(1, 2, G);
+  addEdge(2, 4, G);
   printGraph(G, foutptr);
   fclose(foutptr);
 }
 
-Graph *criaGrafoTeste(int qtde_vertices) {
+Graph *criaGrafoTeste(int numberOfVertices) {
   FILE *foutptr = fopen("result.txt", "w");
-  Graph *G = buildGraph(qtde_vertices);
+  Graph *G = buildGraph(numberOfVertices);
   printGraph(G, foutptr);
 
-  // criaAresta(3, 2, G);
-  // criaAresta(1, 4, G);
-  // criaAresta(0, 2, G);
-  // criaAresta(3, 0, G);
-  // criaAresta(2, 1, G);
+  // addEdge(3, 2, G);
+  // addEdge(1, 4, G);
+  // addEdge(0, 2, G);
+  // addEdge(3, 0, G);
+  // addEdge(2, 1, G);
   // printGraph(G, foutptr);
 
   fclose(foutptr);
@@ -66,16 +66,16 @@ void testeAPS1() {
   FILE *foutptr = fopen("result.txt", "w");
   Graph *G = buildGraph(10);
 
-  criaAresta(0, 6, G);
-  criaAresta(0, 8, G);
-  criaAresta(1, 5, G);
-  criaAresta(1, 7, G);
-  criaAresta(2, 6, G);
-  criaAresta(2, 8, G);
-  criaAresta(3, 7, G);
-  criaAresta(3, 9, G);
-  criaAresta(4, 6, G);
-  criaAresta(4, 8, G);
+  addEdge(0, 6, G);
+  addEdge(0, 8, G);
+  addEdge(1, 5, G);
+  addEdge(1, 7, G);
+  addEdge(2, 6, G);
+  addEdge(2, 8, G);
+  addEdge(3, 7, G);
+  addEdge(3, 9, G);
+  addEdge(4, 6, G);
+  addEdge(4, 8, G);
 
   printGraph(G, foutptr);
 
@@ -85,7 +85,7 @@ void testeAPS1() {
   M->vEmparelhados[7] = 1;
   M->vEmparelhados[2] = 8;
   M->vEmparelhados[8] = 2;
-  M->tamanho = 2;
+  M->size = 2;
   printMatching(M, foutptr);
 
   // TuplaAPS* aps = APS(G, M, 4);
@@ -98,16 +98,16 @@ void testeAPS2() {
   FILE *foutptr = fopen("result.txt", "w");
   Graph *G = buildGraph(10);
 
-  criaAresta(0, 6, G);
-  criaAresta(0, 8, G);
-  criaAresta(1, 5, G);
-  criaAresta(1, 7, G);
-  // criaAresta(2, 6, G);
-  criaAresta(2, 8, G);
-  criaAresta(3, 7, G);
-  criaAresta(3, 9, G);
-  // criaAresta(4, 6, G);
-  criaAresta(4, 8, G);
+  addEdge(0, 6, G);
+  addEdge(0, 8, G);
+  addEdge(1, 5, G);
+  addEdge(1, 7, G);
+  // addEdge(2, 6, G);
+  addEdge(2, 8, G);
+  addEdge(3, 7, G);
+  addEdge(3, 9, G);
+  // addEdge(4, 6, G);
+  addEdge(4, 8, G);
 
   printGraph(G, foutptr);
 
@@ -115,7 +115,7 @@ void testeAPS2() {
 
   M->vEmparelhados[0] = 8;
   M->vEmparelhados[8] = 0;
-  M->tamanho = 1;
+  M->size = 1;
   printMatching(M, foutptr);
 
   // TuplaAPS* aps = APS(G, M, 6);
@@ -166,7 +166,7 @@ int main(int argc, char *argv[]) {
       }
       a = atoi(mat[0]);
       b = atoi(mat[1]);
-      criaAresta(a, b, G);
+      addEdge(a, b, G);
     }
 
     FILE *foutptr;

@@ -10,8 +10,8 @@ Matching *allocatesMatching(Graph *G) {
   M = malloc(sizeof(Matching));
   M->vEmparelhados = malloc(G->n * sizeof(int));
   M->nVertices = G->n;
-  M->maxArestas = G->maxArestas;
-  M->tamanho = 0;
+  M->maxEdges = G->maxEdges;
+  M->size = 0;
   int i;
   for (i = 0; i < G->n; i++) {
     M->vEmparelhados[i] = -1;
@@ -23,17 +23,17 @@ Matching *makeGreedyMatching(Graph *G) {
   Matching *M = allocatesMatching(G);
 
   int i;
-  Vertice *vizinho;
+  Vertex *vizinho;
 
   for (i = 0; i < G->n; i++) {
-    if (G->existe[i]) {
+    if (G->exists[i]) {
       if (!ehCoberto(i, M)) {
         vizinho = G->vertices[i].next;
         while (vizinho != NULL) {
-          if (!ehCoberto(vizinho->rotulo, M)) {
-            M->vEmparelhados[i] = vizinho->rotulo;
-            M->vEmparelhados[vizinho->rotulo] = i;
-            M->tamanho++;
+          if (!ehCoberto(vizinho->label, M)) {
+            M->vEmparelhados[i] = vizinho->label;
+            M->vEmparelhados[vizinho->label] = i;
+            M->size++;
             vizinho = NULL; // essa linha serve para parar o while
           } else {
             vizinho = vizinho->next;
@@ -46,7 +46,7 @@ Matching *makeGreedyMatching(Graph *G) {
 }
 
 void printMatching(Matching *M, FILE *foutptr) {
-  fprintf(foutptr, "%d\n", M->tamanho);
+  fprintf(foutptr, "%d\n", M->size);
   int i;
   for (i = 0; i < M->nVertices; i++) {
     if (M->vEmparelhados[i] != -1) {
@@ -57,6 +57,6 @@ void printMatching(Matching *M, FILE *foutptr) {
   }
 }
 
-bool ehCoberto(int vertice, Matching *M) {
-  return (M->vEmparelhados[vertice] != -1);
+bool ehCoberto(int vertex, Matching *M) {
+  return (M->vEmparelhados[vertex] != -1);
 }

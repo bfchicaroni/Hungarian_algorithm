@@ -5,9 +5,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-ArvoreAPS *alocaArvore(Graph *G) {
-  ArvoreAPS *T;
-  T = malloc(sizeof(ArvoreAPS));
+APSTree *allocatesTree(Graph *G) {
+  APSTree *T;
+  T = malloc(sizeof(APSTree));
   T->pai = malloc(G->n * sizeof(int));
   T->visitado = malloc(G->n * sizeof(bool));
   T->nVertices = G->n;
@@ -19,24 +19,24 @@ ArvoreAPS *alocaArvore(Graph *G) {
   return T;
 }
 
-void diferencaSimetrica(ArvoreAPS *T, Matching *M, int y) {
-  int verticeAtual = y;
-  while (T->pai[T->pai[verticeAtual]] != T->pai[verticeAtual]) {
-    M->vEmparelhados[verticeAtual] = T->pai[verticeAtual];
-    M->vEmparelhados[T->pai[verticeAtual]] = verticeAtual;
-    verticeAtual = T->pai[verticeAtual];
-    // M->vEmparelhados[T->pai[verticeAtual]] = -1;
-    verticeAtual = T->pai[verticeAtual];
+void diferencaSimetrica(APSTree *T, Matching *M, int y) {
+  int currentVertex = y;
+  while (T->pai[T->pai[currentVertex]] != T->pai[currentVertex]) {
+    M->vEmparelhados[currentVertex] = T->pai[currentVertex];
+    M->vEmparelhados[T->pai[currentVertex]] = currentVertex;
+    currentVertex = T->pai[currentVertex];
+    // M->vEmparelhados[T->pai[currentVertex]] = -1;
+    currentVertex = T->pai[currentVertex];
   }
-  M->vEmparelhados[verticeAtual] = T->pai[verticeAtual];
-  M->vEmparelhados[T->pai[verticeAtual]] = verticeAtual;
-  M->tamanho++;
+  M->vEmparelhados[currentVertex] = T->pai[currentVertex];
+  M->vEmparelhados[T->pai[currentVertex]] = currentVertex;
+  M->size++;
 }
 
 TuplaAPS *alocaMemoriaAPS(Graph *G) {
   TuplaAPS *tupla;
   tupla = malloc(sizeof(TuplaAPS));
-  tupla->T = alocaArvore(G);
+  tupla->T = allocatesTree(G);
   tupla->Rt = malloc(G->n * sizeof(bool));
   tupla->Bt = malloc(G->n * sizeof(bool));
   tupla->Mt = malloc(G->n * sizeof(int));
@@ -59,9 +59,9 @@ TuplaAPS *APS(Graph *G, Matching *M, int u) {
 
   fila[ini] = u;
   x = fila[ini];
-  bool existeArestaXY = true;
+  bool edgeXYexists = true;
   bool fimDosVizinhos = false;
-  Vertice *vizX = G->vertices[x].next;
+  Vertex *vizX = G->vertices[x].next;
   tupla->foundMatching = false;
   tupla->T->visitado[x] = true;
   tupla->Rt[x] = true;
@@ -73,7 +73,7 @@ TuplaAPS *APS(Graph *G, Matching *M, int u) {
         fimDosVizinhos = true;
         break;
       }
-      y = vizX->rotulo;
+      y = vizX->label;
       vizX = vizX->next;
     } while (tupla->T->visitado[y]);
     if (fimDosVizinhos) {
@@ -83,7 +83,7 @@ TuplaAPS *APS(Graph *G, Matching *M, int u) {
         vizX = G->vertices[x].next;
         fimDosVizinhos = false;
       } else {
-        existeArestaXY = false;
+        edgeXYexists = false;
       }
     } else {
       tupla->T->visitado[y] = true;
@@ -105,7 +105,7 @@ TuplaAPS *APS(Graph *G, Matching *M, int u) {
         return tupla;
       }
     }
-  } while (existeArestaXY);
+  } while (edgeXYexists);
   // printf("[APS] Nao achou novo emparelhamento\n");
   return tupla;
 }

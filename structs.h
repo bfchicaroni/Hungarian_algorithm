@@ -4,39 +4,39 @@
 #define ESTRUTURAS_H_
 
 // Estrutura que representa os vértices do grafo.
-typedef struct Vertice {
-  int rotulo;
-  struct Vertice *next;
-} Vertice;
+typedef struct Vertex {
+  int label;
+  struct Vertex *next;
+} Vertex;
 
 // Estrutura que representa um grafo.
 typedef struct Graph {
-  Vertice *vertices;
-  bool *existe;
-  int n; // qtde_vertices
+  Vertex *vertices;
+  bool *exists;
+  int n; // numberOfVertices
   int nExistentes;
-  int m; // qtde_arestas
-  int maxArestas;
+  int m; // numberOfEdges
+  int maxEdges;
 } Graph;
 
 // Estrutura que representa um emparelhamento.
 typedef struct Matching {
   int *vEmparelhados;
   int nVertices;
-  int tamanho;
-  int maxArestas;
+  int size;
+  int maxEdges;
 } Matching;
 
 // Estrutura que representa a árvore APS
-typedef struct ArvoreAPS {
+typedef struct APSTree {
   int *pai;
   bool *visitado;
   int nVertices;
-} ArvoreAPS;
+} APSTree;
 
 typedef struct TuplaAPS {
   bool foundMatching;
-  ArvoreAPS *T;
+  APSTree *T;
   int u;
   bool *Rt;
   bool *Bt;
@@ -44,7 +44,7 @@ typedef struct TuplaAPS {
 } TuplaAPS;
 
 typedef struct TuplaHungaro {
-  ArvoreAPS **tau;
+  APSTree **tau;
   bool *R;
   bool *B;
   Matching *Mestrela;
