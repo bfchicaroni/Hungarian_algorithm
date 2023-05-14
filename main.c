@@ -124,7 +124,7 @@ void testeAPS2() {
   fclose(foutptr);
 }
 
-int main(void) {
+int main(int argc, char *argv[]) {
 
   // testeFuncoesBasicasGrafo(G);
 
@@ -139,14 +139,12 @@ int main(void) {
   char mat[2][50];
   char *ptr;
 
-  printf("Digite o nome do arquivo de entrada: ");
-  char filename[100];
-  scanf("%s", filename);
-  char filepath[] = "instances/";
+  char *filename = argv[2];
+  char filepath[] = "input/";
 
   strcat(filepath, filename);
 
-  printf("Procurando o arquivo no caminho:\n%s\n", filepath);
+  printf("Procurando o arquivo no caminho: %s\n", filepath);
 
   fptr = fopen(filepath, "r");
 
@@ -173,29 +171,53 @@ int main(void) {
 
     FILE *foutptr;
 
-    foutptr = fopen("result.txt", "w");
+    char *outputFile = argv[3];
+    char outputpath[] = "output/";
 
-    fprintf(foutptr, "Grafo inicial\n");
-    imprimeGrafo(G, foutptr);
+    strcat(outputpath, outputFile);
 
-    fprintf(foutptr, "Emparelhamento inicial\n");
+    foutptr = fopen(outputpath, "w");
+
+    bool printGraph;
+    bool printFirstMatching;
+    if (argc <= 4) {
+      printGraph = false;
+      printFirstMatching = false;
+    } else if (argc == 5) {
+      printGraph = !strcmp("true", argv[4]);
+      printFirstMatching = false;
+    } else {
+      printGraph = !strcmp("true", argv[4]);
+      printFirstMatching = !strcmp("true", argv[5]);
+    }
+
+    if (printGraph) {
+      fprintf(foutptr, "Grafo inicial\n");
+      imprimeGrafo(G, foutptr);
+    }
+
     Emparelhamento *M = geraEmparelhamentoGuloso(G);
-    imprimeEmparelhamento(M, foutptr);
+
+    if (printFirstMatching) {
+      fprintf(foutptr, "Emparelhamento inicial\n");
+      imprimeEmparelhamento(M, foutptr);
+      fprintf(foutptr, "================================================\n");
+    }
 
     TuplaHungaro *hungarian = hungaro(G, M);
 
-    fprintf(foutptr, "Emparelhamento otimo\n");
+    if (printGraph || printFirstMatching) {
+      fprintf(foutptr, "Emparelhamento otimo\n");
+    }
     imprimeEmparelhamento(hungarian->Mestrela, foutptr);
 
-    fclose(foutptr); 
+    printf("Os resultados estao no arquivo %s\n", outputFile);
 
-    printf("Os resultados estao no arquivo result.txt\n");
-
+    fclose(foutptr);
+    fclose(fptr);
   } else {
     printf("Not able to open the file.\n");
   }
-
-  fclose(fptr);
 
   return 0;
 }

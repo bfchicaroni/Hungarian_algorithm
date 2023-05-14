@@ -163,6 +163,7 @@ void imprimeGrafo(Grafo *G, FILE *foutptr) {
   Vertice *vg = G->vertices;
   bool *existeVertice = G->existe;
   Vertice *atual;
+  fprintf(foutptr, "%d %d\n", G->nExistentes, G->m);
   for (i = 0; i < G->n; i++) {
     if (existeVertice[i]) {
       fprintf(foutptr, "|%d|", vg[i].rotulo);
@@ -174,8 +175,6 @@ void imprimeGrafo(Grafo *G, FILE *foutptr) {
       fprintf(foutptr, "\n");
     }
   }
-  fprintf(foutptr, "Quantidade de vertices: %d\n", G->nExistentes);
-  fprintf(foutptr, "Quantidade de arestas: %d\n", G->m);
   imprimeArestas(G, foutptr);
   fprintf(foutptr, "================================================\n");
 }

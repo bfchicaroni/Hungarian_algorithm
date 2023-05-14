@@ -46,7 +46,7 @@ Emparelhamento *geraEmparelhamentoGuloso(Grafo *G) {
 }
 
 void imprimeEmparelhamento(Emparelhamento *M, FILE *foutptr) {
-  fprintf(foutptr, "Imprimindo emparelhamento de tamanho %d\n", M->tamanho);
+  fprintf(foutptr, "%d\n", M->tamanho);
   int i;
   for (i = 0; i < M->nVertices; i++) {
     if (M->vEmparelhados[i] != -1) {
@@ -55,7 +55,6 @@ void imprimeEmparelhamento(Emparelhamento *M, FILE *foutptr) {
       }
     }
   }
-  fprintf(foutptr, "================================================\n");
 }
 
 bool ehCoberto(int vertice, Emparelhamento *M) {
