@@ -1,57 +1,54 @@
+#include "aps.h"
+#include "emparelhamento.h"
 #include "estruturas.h"
 #include "grafos.h"
-#include "emparelhamento.h"
 #include "hungaro.h"
-#include "aps.h"
+#include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <stdbool.h>
 #include <string.h>
 
-void testeFuncoesEmparelhamento(Grafo* G) {
-  Emparelhamento* M = geraEmparelhamentoGuloso(G);
+void testeFuncoesEmparelhamento(Grafo *G) {
+  Emparelhamento *M = geraEmparelhamentoGuloso(G);
 
   FILE *foutptr = fopen("result.txt", "w");
 
   imprimeEmparelhamento(M, foutptr);
 
-  fclose(foutptr); 
+  fclose(foutptr);
 
-
-  for(int i = 0; i < 5; i++) {
-    if(ehCoberto (i, M) == true){
+  for (int i = 0; i < 5; i++) {
+    if (ehCoberto(i, M) == true) {
       printf("%d eh coberto por M\n", i);
     } else {
       printf("%d NAO eh coberto por M\n", i);
     }
   }
-
 }
 
-void testeFuncoesBasicasGrafo(Grafo* G){
+void testeFuncoesBasicasGrafo(Grafo *G) {
   FILE *foutptr = fopen("result.txt", "w");
   removeVertice(1, G);
   imprimeGrafo(G, foutptr);
 
-  printf(ehVizinho(1, 2, G)? "true\n":"false\n");
-  printf(ehVizinho(2, 1, G)? "true\n":"false\n");
-  printf(ehVizinho(2, 3, G)? "true\n":"false\n");
-  printf(ehVizinho(3, 2, G)? "true\n":"false\n");
+  printf(ehVizinho(1, 2, G) ? "true\n" : "false\n");
+  printf(ehVizinho(2, 1, G) ? "true\n" : "false\n");
+  printf(ehVizinho(2, 3, G) ? "true\n" : "false\n");
+  printf(ehVizinho(3, 2, G) ? "true\n" : "false\n");
 
   removeAresta(1, 2, G);
   criaAresta(4, 3, G);
   imprimeGrafo(G, foutptr);
 
-
   criaAresta(1, 2, G);
   criaAresta(2, 4, G);
   imprimeGrafo(G, foutptr);
-  fclose(foutptr); 
+  fclose(foutptr);
 }
 
-Grafo* criaGrafoTeste(int qtde_vertices) {
+Grafo *criaGrafoTeste(int qtde_vertices) {
   FILE *foutptr = fopen("result.txt", "w");
-  Grafo* G = constroiGrafo(qtde_vertices);
+  Grafo *G = constroiGrafo(qtde_vertices);
   imprimeGrafo(G, foutptr);
 
   // criaAresta(3, 2, G);
@@ -65,9 +62,9 @@ Grafo* criaGrafoTeste(int qtde_vertices) {
   return G;
 }
 
-void testeAPS1 () {
+void testeAPS1() {
   FILE *foutptr = fopen("result.txt", "w");
-  Grafo* G = constroiGrafo(10);
+  Grafo *G = constroiGrafo(10);
 
   criaAresta(0, 6, G);
   criaAresta(0, 8, G);
@@ -82,7 +79,7 @@ void testeAPS1 () {
 
   imprimeGrafo(G, foutptr);
 
-  Emparelhamento* M = alocaEmparelhamento(G);
+  Emparelhamento *M = alocaEmparelhamento(G);
 
   M->vEmparelhados[1] = 7;
   M->vEmparelhados[7] = 1;
@@ -91,15 +88,15 @@ void testeAPS1 () {
   M->tamanho = 2;
   imprimeEmparelhamento(M, foutptr);
 
-  //TuplaAPS* aps = APS(G, M, 4);
+  // TuplaAPS* aps = APS(G, M, 4);
 
   imprimeEmparelhamento(M, foutptr);
   fclose(foutptr);
 }
 
-void testeAPS2 () {
+void testeAPS2() {
   FILE *foutptr = fopen("result.txt", "w");
-  Grafo* G = constroiGrafo(10);
+  Grafo *G = constroiGrafo(10);
 
   criaAresta(0, 6, G);
   criaAresta(0, 8, G);
@@ -114,14 +111,14 @@ void testeAPS2 () {
 
   imprimeGrafo(G, foutptr);
 
-  Emparelhamento* M = alocaEmparelhamento(G);
+  Emparelhamento *M = alocaEmparelhamento(G);
 
   M->vEmparelhados[0] = 8;
   M->vEmparelhados[8] = 0;
   M->tamanho = 1;
   imprimeEmparelhamento(M, foutptr);
 
-  //TuplaAPS* aps = APS(G, M, 6);
+  // TuplaAPS* aps = APS(G, M, 6);
 
   imprimeEmparelhamento(M, foutptr);
   fclose(foutptr);
@@ -138,8 +135,8 @@ int main(void) {
   // testeAPS2();
 
   int vertices, a, b;
-  FILE *fptr;  
-  char mat [2][50];
+  FILE *fptr;
+  char mat[2][50];
   char *ptr;
 
   printf("Digite o nome do arquivo de entrada: ");
@@ -147,7 +144,7 @@ int main(void) {
   scanf("%s", filename);
   char filepath[] = "instances/";
 
-  strcat(filepath,filename);
+  strcat(filepath, filename);
 
   printf("Procurando o arquivo no caminho:\n%s\n", filepath);
 

@@ -1,26 +1,25 @@
-#include <stdio.h>
 #include <stdbool.h>
+#include <stdio.h>
 #ifndef ESTRUTURAS_H_
 #define ESTRUTURAS_H_
 
-//Estrutura que representa os vértices do grafo.
+// Estrutura que representa os vértices do grafo.
 typedef struct Vertice {
   int rotulo;
   struct Vertice *next;
 } Vertice;
 
-
-//Estrutura que representa um grafo.
+// Estrutura que representa um grafo.
 typedef struct Grafo {
-  Vertice* vertices;
-  bool* existe;
-  int n; //qtde_vertices
+  Vertice *vertices;
+  bool *existe;
+  int n; // qtde_vertices
   int nExistentes;
-  int m; //qtde_arestas
+  int m; // qtde_arestas
   int maxArestas;
 } Grafo;
 
-//Estrutura que representa um emparelhamento.
+// Estrutura que representa um emparelhamento.
 typedef struct Emparelhamento {
   int *vEmparelhados;
   int nVertices;
@@ -28,7 +27,7 @@ typedef struct Emparelhamento {
   int maxArestas;
 } Emparelhamento;
 
-//Estrutura que representa a árvore APS
+// Estrutura que representa a árvore APS
 typedef struct ArvoreAPS {
   int *pai;
   bool *visitado;
@@ -37,20 +36,20 @@ typedef struct ArvoreAPS {
 
 typedef struct TuplaAPS {
   bool achouEmparelhamento;
-  ArvoreAPS* T;
+  ArvoreAPS *T;
   int u;
-  bool* Rt;
-  bool* Bt;
-  int* Mt;
+  bool *Rt;
+  bool *Bt;
+  int *Mt;
 } TuplaAPS;
 
 typedef struct TuplaHungaro {
-  ArvoreAPS** tau;
-  bool* R;
-  bool* B;
-  Emparelhamento* Mestrela;
-  bool* U;
-  Grafo* F;
+  ArvoreAPS **tau;
+  bool *R;
+  bool *B;
+  Emparelhamento *Mestrela;
+  bool *U;
+  Grafo *F;
 } TuplaHungaro;
 
 #endif

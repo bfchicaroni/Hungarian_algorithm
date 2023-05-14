@@ -1,15 +1,15 @@
-#include "estruturas.h"
-#include "emparelhamento.h"
 #include "aps.h"
+#include "emparelhamento.h"
+#include "estruturas.h"
+#include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <stdbool.h>
 
-ArvoreAPS* alocaArvore (Grafo* G) {
+ArvoreAPS *alocaArvore(Grafo *G) {
   ArvoreAPS *T;
   T = malloc(sizeof(ArvoreAPS));
-  T->pai = malloc(G->n*sizeof(int));
-  T->visitado = malloc(G->n*sizeof(bool));
+  T->pai = malloc(G->n * sizeof(int));
+  T->visitado = malloc(G->n * sizeof(bool));
   T->nVertices = G->n;
   int i;
   for (i = 0; i < T->nVertices; i++) {
@@ -19,13 +19,13 @@ ArvoreAPS* alocaArvore (Grafo* G) {
   return T;
 }
 
-void diferencaSimetrica(ArvoreAPS* T, Emparelhamento* M, int y) {
+void diferencaSimetrica(ArvoreAPS *T, Emparelhamento *M, int y) {
   int verticeAtual = y;
-  while(T->pai[T->pai[verticeAtual]] != T->pai[verticeAtual]) {
+  while (T->pai[T->pai[verticeAtual]] != T->pai[verticeAtual]) {
     M->vEmparelhados[verticeAtual] = T->pai[verticeAtual];
     M->vEmparelhados[T->pai[verticeAtual]] = verticeAtual;
     verticeAtual = T->pai[verticeAtual];
-    //M->vEmparelhados[T->pai[verticeAtual]] = -1;
+    // M->vEmparelhados[T->pai[verticeAtual]] = -1;
     verticeAtual = T->pai[verticeAtual];
   }
   M->vEmparelhados[verticeAtual] = T->pai[verticeAtual];
@@ -33,8 +33,8 @@ void diferencaSimetrica(ArvoreAPS* T, Emparelhamento* M, int y) {
   M->tamanho++;
 }
 
-TuplaAPS* alocaMemoriaAPS (Grafo* G) {
-  TuplaAPS* tupla;
+TuplaAPS *alocaMemoriaAPS(Grafo *G) {
+  TuplaAPS *tupla;
   tupla = malloc(sizeof(TuplaAPS));
   tupla->T = alocaArvore(G);
   tupla->Rt = malloc(G->n * sizeof(bool));
@@ -50,18 +50,18 @@ TuplaAPS* alocaMemoriaAPS (Grafo* G) {
   return tupla;
 }
 
-TuplaAPS* APS (Grafo* G, Emparelhamento* M, int u) {
-  TuplaAPS* tupla = alocaMemoriaAPS(G);
-  int* fila = malloc(G->n*sizeof(int));
+TuplaAPS *APS(Grafo *G, Emparelhamento *M, int u) {
+  TuplaAPS *tupla = alocaMemoriaAPS(G);
+  int *fila = malloc(G->n * sizeof(int));
   int ini = 0;
   int fim = 1;
   int x, y, z;
-  
+
   fila[ini] = u;
   x = fila[ini];
   bool existeArestaXY = true;
   bool fimDosVizinhos = false;
-  Vertice* vizX = G->vertices[x].next;
+  Vertice *vizX = G->vertices[x].next;
   tupla->achouEmparelhamento = false;
   tupla->T->visitado[x] = true;
   tupla->Rt[x] = true;
@@ -69,13 +69,13 @@ TuplaAPS* APS (Grafo* G, Emparelhamento* M, int u) {
 
   do {
     do {
-      if(vizX == NULL) {
+      if (vizX == NULL) {
         fimDosVizinhos = true;
         break;
       }
       y = vizX->rotulo;
       vizX = vizX->next;
-    } while(tupla->T->visitado[y]);
+    } while (tupla->T->visitado[y]);
     if (fimDosVizinhos) {
       if (ini != fim) {
         x = fila[ini];
@@ -85,22 +85,20 @@ TuplaAPS* APS (Grafo* G, Emparelhamento* M, int u) {
       } else {
         existeArestaXY = false;
       }
-    }
-    else {
+    } else {
       tupla->T->visitado[y] = true;
       tupla->Bt[y] = true;
       tupla->T->pai[y] = x;
       z = M->vEmparelhados[y];
       if (z != -1) {
         fila[fim] = z;
-        fim ++;
+        fim++;
         tupla->T->visitado[z] = true;
         tupla->Rt[z] = true;
         tupla->Mt[z] = y;
         tupla->Mt[y] = z;
         tupla->T->pai[z] = y;
-      }
-      else {
+      } else {
         tupla->achouEmparelhamento = true;
         diferencaSimetrica(tupla->T, M, y);
         // printf("[APS] Terminou com um novo emparelhamento\n");
