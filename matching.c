@@ -1,9 +1,4 @@
 #include "matching.h"
-#include "graph.h"
-#include "structs.h"
-#include <stdbool.h>
-#include <stdio.h>
-#include <stdlib.h>
 
 Matching *allocatesMatching(Graph *G) {
   Matching *M;

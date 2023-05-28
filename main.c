@@ -1,11 +1,4 @@
-#include "aps.h"
-#include "graph.h"
 #include "hungarian.h"
-#include "matching.h"
-#include "structs.h"
-#include <stdbool.h>
-#include <stdio.h>
-#include <stdlib.h>
 #include <string.h>
 
 void testeFuncoesEmparelhamento(Graph *G) {

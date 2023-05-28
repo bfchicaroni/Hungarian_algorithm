@@ -1,9 +1,22 @@
-#include "structs.h"
-#include <stdbool.h>
-#include <stdio.h>
-#include <stdlib.h>
+#include "matching.h"
 #ifndef APS_H_
 #define APS_H_
+
+// Estrutura que representa a árvore APS
+typedef struct APSTree {
+  int *pai;
+  bool *visitado;
+  int nVertices;
+} APSTree;
+
+typedef struct TuplaAPS {
+  bool foundMatching;
+  APSTree *T;
+  int u;
+  bool *Rt;
+  bool *Bt;
+  int *Mt;
+} TuplaAPS;
 
 APSTree *allocatesTree(Graph *G);
 

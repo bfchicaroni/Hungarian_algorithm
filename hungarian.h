@@ -1,9 +1,15 @@
-#include "structs.h"
-#include <stdbool.h>
-#include <stdio.h>
-#include <stdlib.h>
+#include "aps.h"
 #ifndef HUNGARO_H_
 #define HUNGARO_H_
+
+typedef struct TuplaHungaro {
+  APSTree **tau;
+  bool *R;
+  bool *B;
+  Matching *Mestrela;
+  bool *U;
+  Graph *F;
+} TuplaHungaro;
 
 TuplaHungaro *alocaMemoriaHungaro(Graph *G, Matching *M);
 

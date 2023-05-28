@@ -1,9 +1,24 @@
-#include "structs.h"
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
 #ifndef GRAPHS_H_
 #define GRAPHS_H_
+
+// Estrutura que representa os vértices do grafo.
+typedef struct Vertex {
+  int label;
+  struct Vertex *next;
+} Vertex;
+
+// Estrutura que representa um grafo.
+typedef struct Graph {
+  Vertex *vertices;
+  bool *exists;
+  int n; // numberOfVertices
+  int nExistentes;
+  int m; // numberOfEdges
+  int maxEdges;
+} Graph;
 
 Graph *buildGraph(int numberOfVertices);
 

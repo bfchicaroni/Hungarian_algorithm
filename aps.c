@@ -1,9 +1,4 @@
 #include "aps.h"
-#include "matching.h"
-#include "structs.h"
-#include <stdbool.h>
-#include <stdio.h>
-#include <stdlib.h>
 
 APSTree *allocatesTree(Graph *G) {
   APSTree *T;

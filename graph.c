@@ -1,8 +1,4 @@
 #include "graph.h"
-#include "structs.h"
-#include <stdbool.h>
-#include <stdio.h>
-#include <stdlib.h>
 
 // Constroi um grafo sem arestas com a qtde de vertices passada como parâmetro
 Graph *buildGraph(int numberOfVertices) {

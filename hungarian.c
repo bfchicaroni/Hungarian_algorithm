@@ -1,10 +1,4 @@
-#include "aps.h"
-#include "graph.h"
-#include "matching.h"
-#include "structs.h"
-#include <stdbool.h>
-#include <stdio.h>
-#include <stdlib.h>
+#include "hungarian.h"
 
 TuplaHungaro *alocaMemoriaHungaro(Graph *G, Matching *M) {
   TuplaHungaro *tupla;
