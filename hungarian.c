@@ -68,7 +68,7 @@ void matchingUnionArray(Matching *Mestrela, int *M) {
   // printMatching(Mestrela);
 }
 
-void matchingSubtraction(Matching *M, APSTree *T) {
+void removeMatching(Matching *M, APSTree *T) {
   int count = 0;
   for (int i = 0; i < M->nVertices; i++) {
     if (M->vEmparelhados[i] != -1 && T->visitado[i]) {
@@ -79,7 +79,7 @@ void matchingSubtraction(Matching *M, APSTree *T) {
   M->size -= (count / 2);
 }
 
-void subtraiGrafo(Graph *F, APSTree *T) {
+void removeSubgraph(Graph *F, APSTree *T) {
   for (int i = 0; i < T->nVertices; i++) {
     if (T->visitado[i]) {
       removeVertex(i, F);
@@ -111,10 +111,10 @@ TuplaHungaro *hungaro(Graph *G, Matching *M) {
       //   printf("%d %d %d\n", tupla->R[j], tupla->B[j], tupla->U[j]);
       // }
       matchingUnionArray(tupla->Mestrela, aps->Mt);
-      matchingSubtraction(M, aps->T);
+      removeMatching(M, aps->T);
       // printf("M - E(T):\n");
       // printMatching(M);
-      subtraiGrafo(tupla->F, aps->T);
+      removeSubgraph(tupla->F, aps->T);
     }
     desemparelhado = procuraDesemparelhado(G, M);
     // printf("Desemparelhado = %d\n", desemparelhado);
