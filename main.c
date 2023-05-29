@@ -11,7 +11,7 @@ void testeFuncoesEmparelhamento(Graph *G) {
   fclose(foutptr);
 
   for (int i = 0; i < 5; i++) {
-    if (ehCoberto(i, M) == true) {
+    if (isCovered(i, M) == true) {
       printf("%d eh coberto por M\n", i);
     } else {
       printf("%d NAO eh coberto por M\n", i);
@@ -24,10 +24,10 @@ void testeFuncoesBasicasGrafo(Graph *G) {
   removeVertex(1, G);
   printGraph(G, foutptr);
 
-  printf(ehVizinho(1, 2, G) ? "true\n" : "false\n");
-  printf(ehVizinho(2, 1, G) ? "true\n" : "false\n");
-  printf(ehVizinho(2, 3, G) ? "true\n" : "false\n");
-  printf(ehVizinho(3, 2, G) ? "true\n" : "false\n");
+  printf(isNeighbor(1, 2, G) ? "true\n" : "false\n");
+  printf(isNeighbor(2, 1, G) ? "true\n" : "false\n");
+  printf(isNeighbor(2, 3, G) ? "true\n" : "false\n");
+  printf(isNeighbor(3, 2, G) ? "true\n" : "false\n");
 
   removeEdge(1, 2, G);
   addEdge(4, 3, G);
@@ -74,14 +74,14 @@ void testeAPS1() {
 
   Matching *M = allocatesMatching(G);
 
-  M->vEmparelhados[1] = 7;
-  M->vEmparelhados[7] = 1;
-  M->vEmparelhados[2] = 8;
-  M->vEmparelhados[8] = 2;
+  M->coveredVertices[1] = 7;
+  M->coveredVertices[7] = 1;
+  M->coveredVertices[2] = 8;
+  M->coveredVertices[8] = 2;
   M->size = 2;
   printMatching(M, foutptr);
 
-  // TuplaAPS* aps = APS(G, M, 4);
+  // APSTuple* aps = APS(G, M, 4);
 
   printMatching(M, foutptr);
   fclose(foutptr);
@@ -106,26 +106,18 @@ void testeAPS2() {
 
   Matching *M = allocatesMatching(G);
 
-  M->vEmparelhados[0] = 8;
-  M->vEmparelhados[8] = 0;
+  M->coveredVertices[0] = 8;
+  M->coveredVertices[8] = 0;
   M->size = 1;
   printMatching(M, foutptr);
 
-  // TuplaAPS* aps = APS(G, M, 6);
+  // APSTuple* aps = APS(G, M, 6);
 
   printMatching(M, foutptr);
   fclose(foutptr);
 }
 
 int main(int argc, char *argv[]) {
-
-  // testeFuncoesBasicasGrafo(G);
-
-  // testeFuncoesEmparelhamento(G);
-
-  // testeAPS1();
-
-  // testeAPS2();
 
   int vertices, a, b;
   FILE *fptr;
@@ -197,12 +189,12 @@ int main(int argc, char *argv[]) {
       fprintf(foutptr, "================================================\n");
     }
 
-    TuplaHungaro *hungarian = hungaro(G, M);
+    HungarianTuple *hungarianOut = hungarian(G, M);
 
     if (printInputGraph || printFirstMatching) {
       fprintf(foutptr, "Optimal matching\n");
     }
-    printMatching(hungarian->Mestrela, foutptr);
+    printMatching(hungarianOut->Mstar, foutptr);
 
     printf("The results are on the file %s\n", outputFile);
 

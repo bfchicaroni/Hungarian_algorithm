@@ -3,104 +3,104 @@
 APSTree *allocatesTree(Graph *G) {
   APSTree *T;
   T = malloc(sizeof(APSTree));
-  T->pai = malloc(G->n * sizeof(int));
-  T->visitado = malloc(G->n * sizeof(bool));
+  T->dad = malloc(G->n * sizeof(int));
+  T->visited = malloc(G->n * sizeof(bool));
   T->nVertices = G->n;
   int i;
   for (i = 0; i < T->nVertices; i++) {
-    T->pai[i] = -1;
-    T->visitado[i] = 0;
+    T->dad[i] = -1;
+    T->visited[i] = 0;
   }
   return T;
 }
 
 void diferencaSimetrica(APSTree *T, Matching *M, int y) {
   int currentVertex = y;
-  while (T->pai[T->pai[currentVertex]] != T->pai[currentVertex]) {
-    M->vEmparelhados[currentVertex] = T->pai[currentVertex];
-    M->vEmparelhados[T->pai[currentVertex]] = currentVertex;
-    currentVertex = T->pai[currentVertex];
-    // M->vEmparelhados[T->pai[currentVertex]] = -1;
-    currentVertex = T->pai[currentVertex];
+  while (T->dad[T->dad[currentVertex]] != T->dad[currentVertex]) {
+    M->coveredVertices[currentVertex] = T->dad[currentVertex];
+    M->coveredVertices[T->dad[currentVertex]] = currentVertex;
+    currentVertex = T->dad[currentVertex];
+    // M->coveredVertices[T->dad[currentVertex]] = -1;
+    currentVertex = T->dad[currentVertex];
   }
-  M->vEmparelhados[currentVertex] = T->pai[currentVertex];
-  M->vEmparelhados[T->pai[currentVertex]] = currentVertex;
+  M->coveredVertices[currentVertex] = T->dad[currentVertex];
+  M->coveredVertices[T->dad[currentVertex]] = currentVertex;
   M->size++;
 }
 
-TuplaAPS *alocaMemoriaAPS(Graph *G) {
-  TuplaAPS *tupla;
-  tupla = malloc(sizeof(TuplaAPS));
-  tupla->T = allocatesTree(G);
-  tupla->Rt = malloc(G->n * sizeof(bool));
-  tupla->Bt = malloc(G->n * sizeof(bool));
-  tupla->Mt = malloc(G->n * sizeof(int));
+APSTuple *allocatesMemoryAPSMemoriaAPS(Graph *G) {
+  APSTuple *tuple;
+  tuple = malloc(sizeof(APSTuple));
+  tuple->T = allocatesTree(G);
+  tuple->Rt = malloc(G->n * sizeof(bool));
+  tuple->Bt = malloc(G->n * sizeof(bool));
+  tuple->Mt = malloc(G->n * sizeof(int));
 
   int i;
   for (i = 0; i < G->n; i++) {
-    tupla->Rt[i] = false;
-    tupla->Bt[i] = false;
-    tupla->Mt[i] = -1;
+    tuple->Rt[i] = false;
+    tuple->Bt[i] = false;
+    tuple->Mt[i] = -1;
   }
-  return tupla;
+  return tuple;
 }
 
-TuplaAPS *APS(Graph *G, Matching *M, int u) {
-  TuplaAPS *tupla = alocaMemoriaAPS(G);
-  int *fila = malloc(G->n * sizeof(int));
-  int ini = 0;
-  int fim = 1;
+APSTuple *APS(Graph *G, Matching *M, int u) {
+  APSTuple *tuple = allocatesMemoryAPSMemoriaAPS(G);
+  int *line = malloc(G->n * sizeof(int));
+  int begin = 0;
+  int end = 1;
   int x, y, z;
 
-  fila[ini] = u;
-  x = fila[ini];
+  line[begin] = u;
+  x = line[begin];
   bool edgeXYexists = true;
-  bool fimDosVizinhos = false;
+  bool endOfNeighborhood = false;
   Vertex *vizX = G->vertices[x].next;
-  tupla->foundMatching = false;
-  tupla->T->visitado[x] = true;
-  tupla->Rt[x] = true;
-  tupla->T->pai[x] = x;
+  tuple->foundMatching = false;
+  tuple->T->visited[x] = true;
+  tuple->Rt[x] = true;
+  tuple->T->dad[x] = x;
 
   do {
     do {
       if (vizX == NULL) {
-        fimDosVizinhos = true;
+        endOfNeighborhood = true;
         break;
       }
       y = vizX->label;
       vizX = vizX->next;
-    } while (tupla->T->visitado[y]);
-    if (fimDosVizinhos) {
-      if (ini != fim) {
-        x = fila[ini];
-        ini++;
+    } while (tuple->T->visited[y]);
+    if (endOfNeighborhood) {
+      if (begin != end) {
+        x = line[begin];
+        begin++;
         vizX = G->vertices[x].next;
-        fimDosVizinhos = false;
+        endOfNeighborhood = false;
       } else {
         edgeXYexists = false;
       }
     } else {
-      tupla->T->visitado[y] = true;
-      tupla->Bt[y] = true;
-      tupla->T->pai[y] = x;
-      z = M->vEmparelhados[y];
+      tuple->T->visited[y] = true;
+      tuple->Bt[y] = true;
+      tuple->T->dad[y] = x;
+      z = M->coveredVertices[y];
       if (z != -1) {
-        fila[fim] = z;
-        fim++;
-        tupla->T->visitado[z] = true;
-        tupla->Rt[z] = true;
-        tupla->Mt[z] = y;
-        tupla->Mt[y] = z;
-        tupla->T->pai[z] = y;
+        line[end] = z;
+        end++;
+        tuple->T->visited[z] = true;
+        tuple->Rt[z] = true;
+        tuple->Mt[z] = y;
+        tuple->Mt[y] = z;
+        tuple->T->dad[z] = y;
       } else {
-        tupla->foundMatching = true;
-        diferencaSimetrica(tupla->T, M, y);
+        tuple->foundMatching = true;
+        diferencaSimetrica(tuple->T, M, y);
         // printf("[APS] Terminou com um novo emparelhamento\n");
-        return tupla;
+        return tuple;
       }
     }
   } while (edgeXYexists);
   // printf("[APS] Nao achou novo emparelhamento\n");
-  return tupla;
+  return tuple;
 }

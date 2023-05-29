@@ -23,7 +23,7 @@ Graph *buildGraph(int numberOfVertices) {
 }
 
 // Dados dois vértices verifica se exists uma aresta entre eles
-bool ehVizinho(int mainVertexIndex, int rotuloVerticeVizinho, Graph *G) {
+bool isNeighbor(int mainVertexIndex, int neighborLabel, Graph *G) {
 
   if (!G->exists[mainVertexIndex]) {
     return false;
@@ -33,7 +33,7 @@ bool ehVizinho(int mainVertexIndex, int rotuloVerticeVizinho, Graph *G) {
   Vertex *atual = vg[mainVertexIndex].next;
 
   while (atual != NULL) {
-    if (atual->label == rotuloVerticeVizinho) {
+    if (atual->label == neighborLabel) {
       return true;
     }
     atual = atual->next;
@@ -42,11 +42,11 @@ bool ehVizinho(int mainVertexIndex, int rotuloVerticeVizinho, Graph *G) {
 }
 
 // Remove um vértice da lista de vizinhos de um vértice
-void removerVizinho(int rotuloVizinho, int vertexLabel, Graph *G) {
+void removeNeighbor(int neighborLabel, int vertexLabel, Graph *G) {
 
   if (!G->exists[vertexLabel]) {
     printf("Nao e possivel remover %d dos vizinhos de %d pois %d nao existe\n",
-           rotuloVizinho, vertexLabel, vertexLabel);
+           neighborLabel, vertexLabel, vertexLabel);
     return;
   }
 
@@ -55,7 +55,7 @@ void removerVizinho(int rotuloVizinho, int vertexLabel, Graph *G) {
 
   Vertex *anterior;
   while (atual != NULL) {
-    if (atual->label == rotuloVizinho) {
+    if (atual->label == neighborLabel) {
       if (atual == vg[vertexLabel].next) {
         vg[vertexLabel].next = atual->next;
       } else {
@@ -68,16 +68,16 @@ void removerVizinho(int rotuloVizinho, int vertexLabel, Graph *G) {
 }
 
 void removeVertex(int removedVertexLabel, Graph *G) {
-  Vertex *vizinho;
+  Vertex *neighbor;
   if (G->exists[removedVertexLabel]) {
     if (G->vertices[removedVertexLabel].next != NULL) {
-      vizinho = G->vertices[removedVertexLabel].next;
-      while (vizinho != NULL) {
-        if (G->exists[vizinho->label]) {
-          removerVizinho(removedVertexLabel, vizinho->label, G);
+      neighbor = G->vertices[removedVertexLabel].next;
+      while (neighbor != NULL) {
+        if (G->exists[neighbor->label]) {
+          removeNeighbor(removedVertexLabel, neighbor->label, G);
           G->m--;
         }
-        vizinho = vizinho->next;
+        neighbor = neighbor->next;
       }
     }
   } else {
@@ -92,44 +92,44 @@ void removeVertex(int removedVertexLabel, Graph *G) {
 // Remove uma aresta de um grafo
 void removeEdge(int vertexALabel, int vertexBLabel, Graph *G) {
   if (G->exists[vertexALabel] && G->exists[vertexBLabel]) {
-    removerVizinho(vertexALabel, vertexBLabel, G);
-    removerVizinho(vertexBLabel, vertexALabel, G);
+    removeNeighbor(vertexALabel, vertexBLabel, G);
+    removeNeighbor(vertexBLabel, vertexALabel, G);
     G->m--;
   }
 }
 
 // Adiciona um novo nó à vizinhança de um vértice na lista de adjacências
-void adicionarVizinho(int rotuloNovoVizinho, int vertexLabel, Graph *G) {
+void addNeighbor(int newNeighborLabel, int vertexLabel, Graph *G) {
 
   if (!G->exists[vertexLabel]) {
     printf("Nao e possivel adicionar um novo vizinho a %d pois %d nao existe\n",
            vertexLabel, vertexLabel);
     return;
-  } else if (!G->exists[rotuloNovoVizinho]) {
+  } else if (!G->exists[newNeighborLabel]) {
     printf("Nao e possivel adicionar %d como vizinho de um vertice pois o "
            "vertice %d nao existe\n",
-           rotuloNovoVizinho, rotuloNovoVizinho);
+           newNeighborLabel, newNeighborLabel);
     return;
   }
 
   // Cria a estrutura do novo vizinho
-  Vertex *novoVizinho = (Vertex *)malloc(sizeof(Vertex));
-  (*novoVizinho).label = rotuloNovoVizinho;
+  Vertex *newNeighbor = (Vertex *)malloc(sizeof(Vertex));
+  (*newNeighbor).label = newNeighborLabel;
 
   // Encontra o endereço do vértice que vai receber o novo vizinho
   Vertex *vg = G->vertices;
   Vertex *primeiro = &vg[vertexLabel];
 
   // Insere o novo vizinho no início da lista de vizinhos do vértice
-  (*novoVizinho).next = primeiro->next;
-  primeiro->next = novoVizinho;
+  (*newNeighbor).next = primeiro->next;
+  primeiro->next = newNeighbor;
 }
 
 // Cria uma aresta em um grafo
 void addEdge(int vertexALabel, int vertexBLabel, Graph *G) {
   if (G->exists[vertexALabel] && G->exists[vertexBLabel]) {
-    adicionarVizinho(vertexALabel, vertexBLabel, G);
-    adicionarVizinho(vertexBLabel, vertexALabel, G);
+    addNeighbor(vertexALabel, vertexBLabel, G);
+    addNeighbor(vertexBLabel, vertexALabel, G);
     G->m++;
   }
 }
@@ -137,16 +137,16 @@ void addEdge(int vertexALabel, int vertexBLabel, Graph *G) {
 // Imprime na tela a lista de arestas do grafo
 void printEdges(Graph *G, FILE *foutptr) {
   int i;
-  Vertex *vizinho;
+  Vertex *neighbor;
   for (i = 0; i < G->n; i++) {
     if (G->exists[i]) {
       if (G->vertices[i].next != NULL) {
-        vizinho = G->vertices[i].next;
-        while (vizinho != NULL) {
-          if (G->exists[vizinho->label] && i < vizinho->label) {
-            fprintf(foutptr, "|%d|---|%d|\n", i, vizinho->label);
+        neighbor = G->vertices[i].next;
+        while (neighbor != NULL) {
+          if (G->exists[neighbor->label] && i < neighbor->label) {
+            fprintf(foutptr, "|%d|---|%d|\n", i, neighbor->label);
           }
-          vizinho = vizinho->next;
+          neighbor = neighbor->next;
         }
       }
     }

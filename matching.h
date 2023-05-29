@@ -4,7 +4,7 @@
 
 // Estrutura que representa um emparelhamento.
 typedef struct Matching {
-  int *vEmparelhados;
+  int *coveredVertices;
   int nVertices;
   int size;
   int maxEdges;
@@ -18,6 +18,6 @@ Matching *makeGreedyMatching(Graph *G);
 
 void printMatching(Matching *M, FILE *foutptr);
 
-bool ehCoberto(int vertex, Matching *M);
+bool isCovered(int vertex, Matching *M);
 
 #endif

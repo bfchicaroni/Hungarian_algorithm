@@ -4,23 +4,23 @@
 
 // Estrutura que representa a árvore APS
 typedef struct APSTree {
-  int *pai;
-  bool *visitado;
+  int *dad;
+  bool *visited;
   int nVertices;
 } APSTree;
 
-typedef struct TuplaAPS {
+typedef struct APSTuple {
   bool foundMatching;
   APSTree *T;
   int u;
   bool *Rt;
   bool *Bt;
   int *Mt;
-} TuplaAPS;
+} APSTuple;
 
 APSTree *allocatesTree(Graph *G);
 
 void diferencaSimetrica(APSTree *T, Matching *M, int y);
 
-TuplaAPS *APS(Graph *G, Matching *M, int u);
+APSTuple *APS(Graph *G, Matching *M, int u);
 #endif

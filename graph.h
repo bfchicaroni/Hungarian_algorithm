@@ -23,10 +23,10 @@ typedef struct Graph {
 Graph *buildGraph(int numberOfVertices);
 
 // Dados dois vértices verifica se existe uma aresta entre eles
-bool ehVizinho(int mainVertexIndex, int rotuloVerticeVizinho, Graph *G);
+bool isNeighbor(int mainVertexIndex, int neighborLabel, Graph *G);
 
 // Remove um vértice da lista de vizinhos de um vértice
-void removerVizinho(int rotuloVizinho, int vertexLabel, Graph *G);
+void removeNeighbor(int neighborLabel, int vertexLabel, Graph *G);
 
 // Remove um vértice de um grafo
 void removeVertex(int removedVertexLabel, Graph *G);
@@ -35,7 +35,7 @@ void removeVertex(int removedVertexLabel, Graph *G);
 void removeEdge(int vertexALabel, int vertexBLabel, Graph *G);
 
 // Adiciona um novo nó à vizinhança de um vértice na lista de adjacências
-void adicionarVizinho(int rotuloNovoVizinho, int vertexLabel, Graph *G);
+void addNeighbor(int newNeighborLabel, int vertexLabel, Graph *G);
 
 // Cria uma aresta em um grafo
 void addEdge(int vertexALabel, int vertexBLabel, Graph *G);

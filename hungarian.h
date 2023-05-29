@@ -2,29 +2,29 @@
 #ifndef HUNGARO_H_
 #define HUNGARO_H_
 
-typedef struct TuplaHungaro {
+typedef struct HungarianTuple {
   APSTree **tau;
   bool *R;
   bool *B;
-  Matching *Mestrela;
+  Matching *Mstar;
   bool *U;
   Graph *F;
-} TuplaHungaro;
+} HungarianTuple;
 
-TuplaHungaro *alocaMemoriaHungaro(Graph *G, Matching *M);
+HungarianTuple *allocatesMemoryHungarian(Graph *G, Matching *M);
 
-int procuraDesemparelhado(Graph *G, Matching *M);
+int searchUnmatched(Graph *G, Matching *M);
 
-void uniao(bool *A, bool *B, int size);
+void unionOp(bool *A, bool *B, int size);
 
-void matchingUnion(Matching *Mestrela, Matching *M);
+void matchingUnion(Matching *Mstar, Matching *M);
 
-void matchingUnionArray(Matching *Mestrela, int *M);
+void matchingUnionArray(Matching *Mstar, int *M);
 
-void matchingSubtraction(Matching *M, APSTree *T);
+void removeMatching(Matching *M, APSTree *T);
 
-void subtraiGrafo(Graph *F, APSTree *T);
+void removeSubgraph(Graph *F, APSTree *T);
 
-TuplaHungaro *hungaro(Graph *G, Matching *M);
+HungarianTuple *hungarian(Graph *G, Matching *M);
 
 #endif

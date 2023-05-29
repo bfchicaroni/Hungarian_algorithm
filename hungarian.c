@@ -1,33 +1,33 @@
 #include "hungarian.h"
 
-TuplaHungaro *alocaMemoriaHungaro(Graph *G, Matching *M) {
-  TuplaHungaro *tupla;
-  tupla = malloc(sizeof(TuplaHungaro));
-  tupla->tau = malloc(G->n * sizeof(APSTree *));
-  tupla->R = malloc(G->n * sizeof(bool));
-  tupla->B = malloc(G->n * sizeof(bool));
-  tupla->Mestrela = allocatesMatching(G);
-  tupla->U = malloc(G->n * sizeof(bool));
-  tupla->F = G;
+HungarianTuple *allocatesMemoryHungarian(Graph *G, Matching *M) {
+  HungarianTuple *tuple;
+  tuple = malloc(sizeof(HungarianTuple));
+  tuple->tau = malloc(G->n * sizeof(APSTree *));
+  tuple->R = malloc(G->n * sizeof(bool));
+  tuple->B = malloc(G->n * sizeof(bool));
+  tuple->Mstar = allocatesMatching(G);
+  tuple->U = malloc(G->n * sizeof(bool));
+  tuple->F = G;
 
   int i;
   for (i = 0; i < G->n; i++) {
-    tupla->R[i] = false;
-    tupla->B[i] = false;
-    tupla->U[i] = false;
+    tuple->R[i] = false;
+    tuple->B[i] = false;
+    tuple->U[i] = false;
   }
-  return tupla;
+  return tuple;
 }
 
-int procuraDesemparelhado(Graph *G, Matching *M) {
+int searchUnmatched(Graph *G, Matching *M) {
   int i = 0;
-  while (i < M->nVertices && (M->vEmparelhados[i] != -1 || !G->exists[i])) {
+  while (i < M->nVertices && (M->coveredVertices[i] != -1 || !G->exists[i])) {
     i++;
   }
   return i;
 }
 
-void uniao(bool *A, bool *B, int size) {
+void unionOp(bool *A, bool *B, int size) {
   for (int i = 0; i < size; i++) {
     if (B[i]) {
       A[i] = true;
@@ -35,38 +35,38 @@ void uniao(bool *A, bool *B, int size) {
   }
 }
 
-void matchingUnion(Matching *Mestrela, Matching *M) {
-  for (int i = 0; i < Mestrela->nVertices; i++) {
-    if (M->vEmparelhados[i] != -1) {
-      Mestrela->vEmparelhados[i] = M->vEmparelhados[i];
+void matchingUnion(Matching *Mstar, Matching *M) {
+  for (int i = 0; i < Mstar->nVertices; i++) {
+    if (M->coveredVertices[i] != -1) {
+      Mstar->coveredVertices[i] = M->coveredVertices[i];
     }
   }
-  Mestrela->size += M->size;
+  Mstar->size += M->size;
 }
 
-void matchingUnionArray(Matching *Mestrela, int *M) {
+void matchingUnionArray(Matching *Mstar, int *M) {
   int count = 0;
-  // printf("Tamanho Mestrela: %d\n", Mestrela->nVertices);
-  // for (int j = 0; j < Mestrela->nVertices; j++) {
+  // printf("Tamanho Mestrela: %d\n", Mstar->nVertices);
+  // for (int j = 0; j < Mstar->nVertices; j++) {
   //   printf("%d ", M[j]);
   // }
   // printf("\n");
-  for (int i = 0; i < Mestrela->nVertices; i++) {
+  for (int i = 0; i < Mstar->nVertices; i++) {
     if (M[i] != -1) {
-      Mestrela->vEmparelhados[i] = M[i];
+      Mstar->coveredVertices[i] = M[i];
       count++;
     }
   }
-  Mestrela->size += (count / 2);
+  Mstar->size += (count / 2);
   // printf("Mestrela:\n");
-  // printMatching(Mestrela);
+  // printMatching(Mstar);
 }
 
 void removeMatching(Matching *M, APSTree *T) {
   int count = 0;
   for (int i = 0; i < M->nVertices; i++) {
-    if (M->vEmparelhados[i] != -1 && T->visitado[i]) {
-      M->vEmparelhados[i] = -1;
+    if (M->coveredVertices[i] != -1 && T->visited[i]) {
+      M->coveredVertices[i] = -1;
       count++;
     }
   }
@@ -75,48 +75,48 @@ void removeMatching(Matching *M, APSTree *T) {
 
 void removeSubgraph(Graph *F, APSTree *T) {
   for (int i = 0; i < T->nVertices; i++) {
-    if (T->visitado[i]) {
+    if (T->visited[i]) {
       removeVertex(i, F);
     }
   }
 }
 
-TuplaHungaro *hungaro(Graph *G, Matching *M) {
+HungarianTuple *hungarian(Graph *G, Matching *M) {
   int u;
-  TuplaAPS *aps;
-  TuplaHungaro *tupla = alocaMemoriaHungaro(G, M);
-  int desemparelhado = procuraDesemparelhado(G, M);
-  // printf("Primeiro desemparelhado: %d\n", desemparelhado);
+  APSTuple *aps;
+  HungarianTuple *tuple = allocatesMemoryHungarian(G, M);
+  int unmatched = searchUnmatched(G, M);
+  // printf("Primeiro desemparelhado: %d\n", unmatched);
   int i = 0;
-  while (desemparelhado != M->nVertices) {
-    u = desemparelhado;
+  while (unmatched != M->nVertices) {
+    u = unmatched;
     // printf("u = %d\n", u);
     aps = APS(G, M, u);
     // printMatching(M);
     if (!aps->foundMatching) {
       // printf("Nao achou mais emparelhamento\n");
-      tupla->tau[i] = aps->T;
+      tuple->tau[i] = aps->T;
       i++;
-      uniao(tupla->R, aps->Rt, G->n);
-      uniao(tupla->B, aps->Bt, G->n);
-      tupla->U[u] = true;
+      unionOp(tuple->R, aps->Rt, G->n);
+      unionOp(tuple->B, aps->Bt, G->n);
+      tuple->U[u] = true;
       // printf("R B U\n");
       // for (int j = 0; j < G->n; j++) {
-      //   printf("%d %d %d\n", tupla->R[j], tupla->B[j], tupla->U[j]);
+      //   printf("%d %d %d\n", tuple->R[j], tuple->B[j], tuple->U[j]);
       // }
-      matchingUnionArray(tupla->Mestrela, aps->Mt);
+      matchingUnionArray(tuple->Mstar, aps->Mt);
       removeMatching(M, aps->T);
       // printf("M - E(T):\n");
       // printMatching(M);
-      removeSubgraph(tupla->F, aps->T);
+      removeSubgraph(tuple->F, aps->T);
     }
-    desemparelhado = procuraDesemparelhado(G, M);
-    // printf("Desemparelhado = %d\n", desemparelhado);
+    unmatched = searchUnmatched(G, M);
+    // printf("Desemparelhado = %d\n", unmatched);
   }
   // printf("R B U\n");
   // for (int j = 0; j < G->n; j++) {
-  //   printf("%d %d %d\n", tupla->R[j], tupla->B[j], tupla->U[j]);
+  //   printf("%d %d %d\n", tuple->R[j], tuple->B[j], tuple->U[j]);
   // }
-  matchingUnion(tupla->Mestrela, M);
-  return tupla;
+  matchingUnion(tuple->Mstar, M);
+  return tuple;
 }
